@@ -71,6 +71,16 @@ footer {
     justify-content: space-between;
 }
 
+@media (max-width: 900px) {
+
+    .about {
+
+        max-width: 80%;
+    
+    }
+    
+}
+
 
 
 @media (max-width: 439px) {
