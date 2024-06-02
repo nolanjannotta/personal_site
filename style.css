@@ -6,15 +6,27 @@ body {
     padding: 40px 50px;
     transform: skewY(2deg);
     line-height: 1.6;
-    min-height: 100vh;
     font-size: larger;
+
+    
 }
+
+
+
+@keyframes shadow {
+    30% {
+       text-shadow: -3px -5px 3px black ;
+    }
+ }
+
+
+
 
 
 
 
 p, li, h1 {
-    text-shadow: #e8e8e8b7 -3px -2px;
+    text-shadow: -3px -2px  #e8e8e8b7;
 
 }
 
@@ -52,6 +64,8 @@ a {
 a:hover {
     text-decoration: underline;
     text-decoration-style: wavy;
+    animation-timing-function: ease-in-out;
+    animation: shadow 5s;
 }
 
 footer {
@@ -70,6 +84,38 @@ footer {
     display: flex;
     justify-content: space-between;
 }
+
+
+
+@keyframes flying {
+    0% {
+        left: 0;
+        top: 40%;
+        color:black;
+        /* display: inline  */
+      }
+      50% {
+        left: 100%;
+        top: 70%;
+      }
+      100% {
+        left: 0;   
+        top: 40%; 
+      }
+ }
+
+
+.flying {
+    animation: flying 150s infinite;
+    animation-delay: 5s;
+    position: absolute;
+    left: 0;
+    color: transparent;
+    /* color: white; */
+    
+}
+
+
 
 @media (max-width: 900px) {
 
