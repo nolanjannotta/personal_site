@@ -97,20 +97,25 @@ footer {
       50% {
         left: 100%;
         top: 70%;
+        color:black;
+        
       }
       100% {
         left: 0;   
         top: 40%; 
+        color:black;
       }
  }
 
 
+
 .flying {
     animation: flying 150s infinite;
+    animation-direction: normal;
     animation-delay: 5s;
     position: absolute;
     left: 0;
-    color: transparent;
+    color: white;
     /* color: white; */
     
 }
@@ -123,6 +128,10 @@ footer {
 
         max-width: 90%;
     
+    }
+    .flying {
+        animation: flying 30s infinite;
+
     }
     
 }
