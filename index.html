@@ -21,28 +21,7 @@
             font-size: larger;
         }
 
-        @media (max-width: 439px) {
-            body {
-              font-size: small;  
-              padding: 20px 25px;
-            }
-/* 
-            li {
-            margin: 7px;
-        } */
 
-            
-        }
-
-        @media (max-width: 285px) {
-            body {
-              font-size: x-small;  
-              padding: 20px 25px;
-            }
-
-
-            
-        }
 
 
         
@@ -61,7 +40,8 @@
 
         }
         .list {
-            list-style: "\27A2";
+            list-style: none; /* "\27A2"; */
+
         }
         li {
             margin: 5px;
@@ -75,6 +55,10 @@
             
         }
 
+        .arrow {
+            font-size: x-large;
+        }
+
       
 
         a {
@@ -86,6 +70,32 @@
             text-decoration: underline;
             text-decoration-style: wavy;
         }
+
+
+
+        @media (max-width: 439px) {
+            body {
+              font-size: small;  
+              padding: 20px 25px;
+            }
+/* 
+            li {
+            margin: 7px;
+        } */
+
+            
+        }
+
+        @media (max-width: 285px) {
+            body {
+              font-size: x-small;  
+            }
+
+
+            
+        }
+
+
 
 
 
@@ -116,16 +126,33 @@
             
                 <h1>&#9711; digital</h1>
                 <ul class="list">
-                    <li>&nbsp;calculator &#8981;</li>
-                    <li>&nbsp;snakes &#8981;</li>
-                    <li>&nbsp;keyboard &#8981;</li>
-                    <li>&nbsp;recursive trees &#8981;</li>
-                    <li>&nbsp;onchain experiments &#8981;</li>
+                    <li>
+                        <span class="arrow">&#10147;</span>
+                        calculator &#8981;
+                    </li>
+                    <li>
+                        <span class="arrow">&#10147;</span>
+                        snakes &#8981;
+                    </li>
+                    <li>
+                        <span class="arrow">&#10147;</span>
+                        keyboard &#8981;
+                    </li>
+                    <li>
+                        <span class="arrow">&#10147;</span>
+                        recursive trees &#8981;</li>
+                    <li>
+                        <span class="arrow">&#10147;</span>
+                        onchain experiments &#8981;
+                    </li>
                 </ul>
 
                 <h1>&#9711; physical</h1>
                 <ul class="list">
-                    <li>&nbsp;*********** mfg. co.</li>
+                    <li>
+                        <span class="arrow">&#10147;</span>
+                        *********** mfg. co.
+                    </li>
                 </ul>
             
         </section>
