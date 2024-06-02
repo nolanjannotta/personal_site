@@ -1,4 +1,9 @@
 
+@font-face {
+    font-family: Source Code Pro;
+    src:local("./Source_Code_Pro/SourceCodePro-VariableFont_wght.ttf");
+}
+
 
 body {
     font-family: 'Source Code Pro', monospace;
@@ -131,6 +136,11 @@ footer {
     }
     .flying {
         animation: flying 30s infinite;
+        animation-direction: normal;
+        animation-delay: 20s;
+        position: absolute;
+        left: 0;
+        color: white;
 
     }
     
