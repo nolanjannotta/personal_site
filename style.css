@@ -13,7 +13,6 @@ body {
 
 
 
-
 p, li, h1 {
     text-shadow: #e8e8e8b7 -3px -2px;
 
@@ -53,6 +52,23 @@ a {
 a:hover {
     text-decoration: underline;
     text-decoration-style: wavy;
+}
+
+footer {
+    opacity: 0.3;
+}
+
+.about {
+
+    max-width: 40%;
+
+}
+
+.corners {
+    /* background-color: blue; */
+    min-width: 100%;
+    display: flex;
+    justify-content: space-between;
 }
 
 
