@@ -62,7 +62,7 @@
 </body>
 
 <script type="module">
-    import { createPublicClient, http, getContract, formatEther } from 'https://esm.sh/viem'
+    import { createPublicClient, http, getContract, formatEther,parseEther  } from 'https://esm.sh/viem'
     import { mainnet } from 'https://esm.sh/viem/chains'
     import { createConfig, readContracts, connect, disconnect, getAccount,simulateContract, writeContract } from 'https://esm.sh/@wagmi/core@2.x'
     import { injected, metaMask, walletConnect,coinbaseWallet  } from 'https://esm.sh/@wagmi/connectors'
@@ -185,7 +185,7 @@
             abi,
             functionName: 'mint',
             args: [inputArr],
-            value: parseEther(.04 * inputArr.length),
+            value: parseEther((.04 * inputArr.length).toString()),
             account: account.address
             })
 
