@@ -44,8 +44,11 @@
             <button id="coinbaseWallet">coinbaseWallet</button> 
         </span>
         
+        <span id="mintButtons">
+            
+        <button id="mint">mint</button>
         <button id="disconnect">disconnect</button>
-        
+        </span>
 
     </main>
 
@@ -153,6 +156,7 @@
         await disconnect(config)
         accountElement.textContent = ""
         connectbuttons.style.display = "inline-block"
+        document.getElementById("mintButtons").style.display = "none"
     }
 
 
@@ -163,6 +167,7 @@
         const address = await getAccount(config)
         accountElement.textContent = `connected as: ${address.address}`
         connectbuttons.style.display = "none"
+        document.getElementById("mintButtons").style.display = "inline-block"
 
 
     }
