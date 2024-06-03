@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nolan Jannotta</title>
+
+    <link href="./style.css" rel="stylesheet">
+
+
+
+</head>
+
+<body>
+    <header>
+        <h1 class="title">Nolan Jannotta</h1>
+
+        <nav>
+            <ul class="nav_bar">
+                <li><a href="https://personal-site-neon-ten.vercel.app/index.html">&#8656; home</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section id="about">
+            <h1>&#9711; Snake</h1>
+            <p> <small id="deployedAt"></small></p>
+            <p>a fully onchain game of snake. </p>
+            <p><b>*known bug:</b> food is able to spawn underneath the snake.</p>
+            <object width="500" id="image"></object>
+            <p id="supply"></p>
+        </section>
+
+        <button id="connectWallet">connect</button>
+
+    </main>
+
+    <footer>
+        <p><small>made with ☠ by nolan</small></p>
+    </footer>
+</body>
+
+<script type="module">
+    import { createPublicClient, http, getContract, formatEther } from 'https://esm.sh/viem'
+    import { mainnet } from 'https://esm.sh/viem/chains'
+    import { createConfig, readContracts, connect } from 'https://esm.sh/@wagmi/core@2.x'
+    import { injected, metaMask, walletConnect } from 'https://esm.sh/@wagmi/connectors'
+
+
+    const image = document.getElementById('image');
+    const supply = document.getElementById('supply');
+    const connectButton = document.getElementById('connectWallet');
+    const deployedAt = document.getElementById('deployedAt');
+    const calculator = "0x8c822FA282722eDcA512A9E94C591d3F52196eF2"
+    const abi = [{
+        inputs: [
+            {
+                "internalType": "uint256",
+                "name": "id",
+                "type": "uint256"
+            }
+        ],
+        name: "tokenURI",
+        outputs: [
+            {
+                internalType: "string",
+                name: "",
+                type: "string"
+            }
+        ],
+        stateMutability: "view",
+        type: "function"
+    },
+    {
+        inputs: [],
+        name: "totalSupply",
+        outputs: [
+            {
+                internalType: "uint256",
+                name: "",
+                type: "uint256"
+            }
+        ],
+        stateMutability: "view",
+        type: "function"
+    },
+    {
+        inputs: [],
+        name: "maxSupply",
+        outputs: [
+            {
+                internalType: "uint256",
+                name: "",
+                type: "uint256"
+            }
+        ],
+        stateMutability: "view",
+        type: "function"
+    },
+    {
+        inputs: [],
+        name: "price",
+        outputs: [
+            {
+                internalType: "uint256",
+                name: "",
+                type: "uint256"
+            }
+        ],
+        stateMutability: "view",
+        type: "function"
+    },
+
+    ]
+
+    const config = createConfig({
+        chains: [mainnet],
+        transports: {
+            [mainnet.id]: http("https://rpc.flashbots.net")
+        }
+
+    })
+
+
+
+
+
+    async function connectWallet() {
+        const result = await connect(config, {
+            connector: injected({
+                target() {
+                    return {
+                        id: 'windowProvider',
+                        name: 'Window Provider',
+                        provider: window.ethereum,
+                    }
+                },
+            })
+        })
+    }
+
+
+    window.onload = async function () {
+
+        const results = await readContracts(config, {
+            contracts: [
+                {
+                    address: calculator,
+                    abi,
+                    functionName: 'tokenURI',
+                    args: [1]
+                },
+                {
+                    address: calculator,
+                    abi,
+                    functionName: 'totalSupply',
+                },
+                {
+                    address: calculator,
+                    abi,
+                    functionName: 'maxSupply',
+                },
+                {
+                    address: calculator,
+                    abi,
+                    functionName: 'price',
+                }
+            ]
+        })
+
+        console.log(results)
+
+
+        const response = await fetch(results[0].result)
+        const json = await response.json()
+
+        const deployed = new Date("May-05-2022 08:31:07")
+
+        deployedAt.textContent = `\u25B9 deployed: ${deployed.toLocaleDateString('en-GB', {
+            weekday: 'long',
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+        })}`
+
+        supply.textContent = `supply: ${Number(results[1].result)}/${Number(results[2].result)} \u2592\u2592\u2592 price: ${formatEther(results[3].result)} eth`
+        image.setAttribute('data', json.image)
+        connectButton.onclick = connectWallet
+
+
+    };
+
+
+
+
+
+</script>
+
+</html>

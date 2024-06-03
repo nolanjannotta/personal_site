@@ -24,6 +24,8 @@
     <main>
         <section id="about">
             <h1>&#9711; Calculators</h1>
+            <p > <small id="deployedAt"></small></p>
+
             <p>a fully onchain "NFT" from 2022. Fully functioning SVG stored onchain. comes in 5 colors. </p>
             <object width="500" id="image"></object>
             <p id="supply"></p>
@@ -48,6 +50,8 @@
     const image = document.getElementById('image');
     const supply = document.getElementById('supply');
     const connectButton = document.getElementById('connectWallet');
+    const deployedAt = document.getElementById('deployedAt');
+
     const calculator = "0xC3B88A12D8Cda6b9802C30be4bb18BDd1828b317"
     const abi = [{
             inputs: [
@@ -163,11 +167,20 @@
             ]
         })
 
-        console.log(results)
 
 
     const response = await fetch(results[0].result)
     const json = await response.json()
+
+    const deployed = new Date("Mar-30-2022 04:01:02")
+
+    deployedAt.textContent = `\u25B9 deployed: ${deployed.toLocaleDateString('en-GB', {
+            weekday: 'long',
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+        })}`
+
 
     supply.textContent = `supply: ${Number(results[1].result)}/${Number(results[2].result)} \u2592\u2592\u2592 price: ${formatEther(results[3].result)} eth`
     image.setAttribute('data', json.image)
