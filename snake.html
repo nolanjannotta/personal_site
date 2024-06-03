@@ -152,8 +152,9 @@
         const result = await connect(config, {
             connector: connector(options)
         })
+        const address = await getAccount(config)
 
-        console.log(config, result)
+        console.log(config, result, address)
     }
 
 
@@ -200,7 +201,7 @@
         walletConnectElement.onclick = () => connectWallet(walletConnect)
         coinbaseWalletElement.onclick = () => connectWallet(coinbaseWallet, {appName: 'Nolan Jannotta', appLogoUrl: 'https://personal-site-neon-ten.vercel.app/favicon.ico',preference: "all"})
         disconnectElement.onclick = () => disconnectWallet()
-        accountElement.onclick = () => getAddress()
+        accountElement.onclick = getAddress
 
 
     };
