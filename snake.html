@@ -36,7 +36,7 @@
             <object width="500" id="image"></object>
             <p id="supply">loading...</p>
         </section>
-        <p id="account">account</p>
+        <p > <small id="account"></small></p>
 
         <button id="metamask">metamask</button>
         <button id="walletConnect">walletConnect</button>
@@ -204,6 +204,11 @@
         walletConnectElement.onclick = () => connectWallet(walletConnect)
         coinbaseWalletElement.onclick = () => connectWallet(coinbaseWallet, {appName: 'Nolan Jannotta', appLogoUrl: 'https://personal-site-neon-ten.vercel.app/favicon.ico',preference: "all"})
         disconnectElement.onclick = () => disconnectWallet()
+
+        const address = await getAccount(config)
+        accountElement.textContent = `connected as: ${address.address}`
+
+        
         // accountElement.onclick = getAddress
 
 
