@@ -39,6 +39,7 @@
         <p > <small id="account"></small></p>
 
         <span id="connectButtons">
+            
            <button id="metamask">metamask</button>
             <!-- <button id="walletConnect">walletConnect</button> -->
             <button id="coinbaseWallet">coinbaseWallet</button> 
@@ -46,7 +47,7 @@
         
 
         <span id="mintButtons">
-            
+            <input type="number" width="100px" placeholder="amount. up to 5" />
             <button id="mint">mint</button>
             <button id="disconnect">disconnect</button>
         </span>
@@ -217,7 +218,7 @@
 
         metamask.onclick = () => connectWallet(injected)
         // walletConnectElement.onclick = () => connectWallet(walletConnect)
-        coinbaseWalletElement.onclick = () => connectWallet(coinbaseWallet, {appName: 'Nolan Jannotta', appLogoUrl: 'https://personal-site-neon-ten.vercel.app/favicon.ico',preference: "all"})
+        coinbaseWalletElement.onclick = () => connectWallet(coinbaseWallet, {appName: 'snake',preference: "all"})
         disconnectElement.onclick = () => disconnectWallet()
 
         const address = await getAccount(config)
