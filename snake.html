@@ -222,11 +222,13 @@
         if(address.address) {
             accountElement.textContent = `connected as: ${address.address}`
             connectbuttons.style.display = "none"
+            document.getElementById("mintButtons").style.display = "inline-block"
         
         }
         else {
             accountElement.textContent = ""
             connectbuttons.style.display = "inline-block"
+            document.getElementById("mintButtons").style.display = "none"
         
         }
 
