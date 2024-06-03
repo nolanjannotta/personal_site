@@ -69,7 +69,7 @@
     const disconnectElement = document.getElementById('disconnect');
     const accountElement = document.getElementById('account');
     const connectbuttons = document.getElementById('connectbuttons');
-    
+
     const deployedAt = document.getElementById('deployedAt').textContent = `\u25B9 deployed: May-05-2022`;
     const calculator = "0x8c822FA282722eDcA512A9E94C591d3F52196eF2"
     const abi = [{
@@ -161,6 +161,7 @@
         })
         const address = await getAccount(config)
         accountElement.textContent = `connected as: ${address.address}`
+        connectbuttons.style.display = "none"
 
 
     }
