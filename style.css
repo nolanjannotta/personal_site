@@ -31,7 +31,8 @@ body {
 
 p,
 li,
-h1 {
+h1,
+object {
     text-shadow: -2px -2px 2px #c8c8c8;
 
 }

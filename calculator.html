@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,10 +11,11 @@
 
 
 </head>
+
 <body>
     <header>
         <h1 class="title">Nolan Jannotta</h1>
-       
+
         <nav>
             <ul class="nav_bar">
                 <li><a href="https://personal-site-neon-ten.vercel.app/index.html">&#8656; home</a></li>
@@ -24,7 +26,7 @@
     <main>
         <section id="about">
             <h1>&#9711; Calculators</h1>
-            <p > <small id="deployedAt"></small></p>
+            <p> <small id="deployedAt"></small></p>
 
             <p>a fully onchain "NFT" from 2022. Fully functioning SVG stored onchain. comes in 5 colors. </p>
             <object width="500" id="image"></object>
@@ -32,7 +34,7 @@
         </section>
 
         <button id="connectWallet">connect</button>
-        
+
     </main>
 
     <footer>
@@ -41,10 +43,10 @@
 </body>
 
 <script type="module">
-    import { createPublicClient, http, getContract, formatEther  } from 'https://esm.sh/viem'
-    import { mainnet} from 'https://esm.sh/viem/chains'
-    import { createConfig,readContracts, connect  } from 'https://esm.sh/@wagmi/core@2.x'
-    import { injected, metaMask, walletConnect  } from 'https://esm.sh/@wagmi/connectors'
+    import { createPublicClient, http, getContract, formatEther } from 'https://esm.sh/viem'
+    import { mainnet } from 'https://esm.sh/viem/chains'
+    import { createConfig, readContracts, connect } from 'https://esm.sh/@wagmi/core@2.x'
+    import { injected, metaMask, walletConnect } from 'https://esm.sh/@wagmi/connectors'
 
 
     const image = document.getElementById('image');
@@ -52,53 +54,55 @@
     const connectButton = document.getElementById('connectWallet');
     const deployedAt = document.getElementById('deployedAt');
 
+
+    
     const calculator = "0xC3B88A12D8Cda6b9802C30be4bb18BDd1828b317"
     const abi = [{
-            inputs: [
-                {
-                    "internalType": "uint256",
-                    "name": "id",
-                    "type": "uint256"
-                }
-            ],
-            name: "tokenURI",
-            outputs: [
-                {
-                    internalType: "string",
-                    name: "",
-                    type: "string"
-                }
-            ],
+        inputs: [
+            {
+                "internalType": "uint256",
+                "name": "id",
+                "type": "uint256"
+            }
+        ],
+        name: "tokenURI",
+        outputs: [
+            {
+                internalType: "string",
+                name: "",
+                type: "string"
+            }
+        ],
         stateMutability: "view",
         type: "function"
     },
-        {
-            inputs: [],
-            name: "totalSupply",
-            outputs: [
-                {
-                    internalType: "uint256",
-                    name: "",
-                    type: "uint256"
-                }
-            ],
-            stateMutability: "view",
-            type: "function"
-        },
-        {
-            inputs: [],
-            name: "maxSupply",
-            outputs: [
-                {
-                    internalType: "uint256",
-                    name: "",
-                    type: "uint256"
-                }
-            ],
-            stateMutability: "view",
-            type: "function"
-        },
-        {
+    {
+        inputs: [],
+        name: "totalSupply",
+        outputs: [
+            {
+                internalType: "uint256",
+                name: "",
+                type: "uint256"
+            }
+        ],
+        stateMutability: "view",
+        type: "function"
+    },
+    {
+        inputs: [],
+        name: "maxSupply",
+        outputs: [
+            {
+                internalType: "uint256",
+                name: "",
+                type: "uint256"
+            }
+        ],
+        stateMutability: "view",
+        type: "function"
+    },
+    {
         inputs: [],
         name: "price",
         outputs: [
@@ -127,22 +131,24 @@
 
 
     async function connectWallet() {
-        const result = await connect(config, { connector: injected({
-            target() { 
-                return { 
-                id: 'windowProvider', 
-                name: 'Window Provider', 
-                provider: window.ethereum, 
-                } 
-        }, 
-        }) })
+        const result = await connect(config, {
+            connector: injected({
+                target() {
+                    return {
+                        id: 'windowProvider',
+                        name: 'Window Provider',
+                        provider: window.ethereum,
+                    }
+                },
+            })
+        })
     }
 
 
-    window.onload = async function() {
+    window.onload = async function () {
 
         const results = await readContracts(config, {
-            contracts:[
+            contracts: [
                 {
                     address: calculator,
                     abi,
@@ -169,12 +175,12 @@
 
 
 
-    const response = await fetch(results[0].result)
-    const json = await response.json()
+        const response = await fetch(results[0].result)
+        const json = await response.json()
 
-    const deployed = new Date("Mar-30-2022 04:01:02")
+        const deployed = new Date("Mar-30-2022 04:01:02")
 
-    deployedAt.textContent = `\u25B9 deployed: ${deployed.toLocaleDateString('en-GB', {
+        deployedAt.textContent = `\u25B9 deployed: ${deployed.toLocaleDateString('en-GB', {
             weekday: 'long',
             year: 'numeric',
             month: 'long',
@@ -182,24 +188,17 @@
         })}`
 
 
-    supply.textContent = `supply: ${Number(results[1].result)}/${Number(results[2].result)} \u2592\u2592\u2592 price: ${formatEther(results[3].result)} eth`
-    image.setAttribute('data', json.image)
-    connectButton.onclick = connectWallet
+        supply.textContent = `supply: ${Number(results[1].result)}/${Number(results[2].result)} \u2592\u2592\u2592 price: ${formatEther(results[3].result)} eth`
+        image.setAttribute('data', json.image)
+        connectButton.onclick = connectWallet
 
-        
+
     };
-
-
-
-    
-    
-  </script>
-  <script> 
-    
 
 
 
 
 
 </script>
+
 </html>
