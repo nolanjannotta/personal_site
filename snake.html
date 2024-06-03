@@ -57,7 +57,7 @@
     const image = document.getElementById('image');
     const supply = document.getElementById('supply');
     const metamask = document.getElementById('metamask');
-    const walletConnect = document.getElementById('walletConnect');
+    const walletConnectElement = document.getElementById('walletConnect');
     const deployedAt = document.getElementById('deployedAt').textContent = `\u25B9 deployed: May-05-2022`;
     const calculator = "0x8c822FA282722eDcA512A9E94C591d3F52196eF2"
     const abi = [{
@@ -179,7 +179,7 @@
         image.setAttribute('data', json.image)
 
         metamask.onclick = () => connectWallet(injected)
-        walletConnect.onclick = () => connectWallet(walletConnect)
+        walletConnectElement.onclick = () => connectWallet(walletConnect)
 
 
     };
