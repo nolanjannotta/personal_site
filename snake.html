@@ -39,6 +39,7 @@
 
         <button id="metamask">metamask</button>
         <button id="walletConnect">walletConnect</button>
+        <button id="coinbaseWallet">coinbaseWallet</button>
 
     </main>
 
@@ -51,13 +52,14 @@
     import { createPublicClient, http, getContract, formatEther } from 'https://esm.sh/viem'
     import { mainnet } from 'https://esm.sh/viem/chains'
     import { createConfig, readContracts, connect } from 'https://esm.sh/@wagmi/core@2.x'
-    import { injected, metaMask, walletConnect } from 'https://esm.sh/@wagmi/connectors'
+    import { injected, metaMask, walletConnect,coinbaseWallet  } from 'https://esm.sh/@wagmi/connectors'
 
 
     const image = document.getElementById('image');
     const supply = document.getElementById('supply');
     const metamask = document.getElementById('metamask');
     const walletConnectElement = document.getElementById('walletConnect');
+    const coinbaseWalletElement = document.getElementById('coinbaseWallet');
     const deployedAt = document.getElementById('deployedAt').textContent = `\u25B9 deployed: May-05-2022`;
     const calculator = "0x8c822FA282722eDcA512A9E94C591d3F52196eF2"
     const abi = [{
@@ -180,7 +182,7 @@
 
         metamask.onclick = () => connectWallet(injected)
         walletConnectElement.onclick = () => connectWallet(walletConnect)
-
+        coinbaseWalletElement.onclick = () => connectWallet(coinbaseWallet)
 
     };
 
