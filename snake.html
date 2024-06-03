@@ -39,7 +39,8 @@
         <p > <small id="account"></small></p>
 
         <span id="connectButtons">
-            
+            <input type="number" onchange="mint()" width="100px" placeholder="amount. up to 5" />
+
            <button id="metamask">metamask</button>
             <!-- <button id="walletConnect">walletConnect</button> -->
             <button id="coinbaseWallet">coinbaseWallet</button> 
@@ -47,7 +48,7 @@
         
 
         <span id="mintButtons">
-            <input type="number" onchange="mint()" width="100px" placeholder="amount. up to 5" />
+            <input id="input" type="number" width="100px" placeholder="amount. up to 5" />
             <button id="mint">mint</button>
             <button id="disconnect">disconnect</button>
         </span>
@@ -154,7 +155,7 @@
     // }
 
 
-    async function mint(e) {
+    async function createInputArray(e) {
         const inputArr = []
         for(let i = 0; i <Number(e.event.target); i++) {
             inputArr.push((Math.random() * 5)+1)
@@ -238,7 +239,7 @@
         // walletConnectElement.onclick = () => connectWallet(walletConnect)
         coinbaseWalletElement.onclick = () => connectWallet(coinbaseWallet, {appName: 'snake',preference: "all"})
         disconnectElement.onclick = () => disconnectWallet()
-
+        document.getElementById("input").onchange = createInputArray
         const address = await getAccount(config)
 
         if(address.address) {
