@@ -135,9 +135,9 @@
 
 
 
-    async function connectWallet(connector) {
+    async function connectWallet(connector, options = {}) {
         const result = await connect(config, {
-            connector: connector()
+            connector: connector(options)
         })
     }
 
@@ -182,7 +182,7 @@
 
         metamask.onclick = () => connectWallet(injected)
         walletConnectElement.onclick = () => connectWallet(walletConnect)
-        coinbaseWalletElement.onclick = () => connectWallet(coinbaseWallet)
+        coinbaseWalletElement.onclick = () => connectWallet(coinbaseWallet, {appName: 'Nolan Jannotta', appLogoUrl: 'https://personal-site-neon-ten.vercel.app/favicon.ico'})
 
     };
 
