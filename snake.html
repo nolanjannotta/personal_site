@@ -136,10 +136,10 @@
     })
 
 
-    async function getAddress() {
-        return await getAccount(config)
-        console.log(address)
-    }
+    // async function getAddress() {
+    //     return await getAccount(config)
+    //     console.log(address)
+    // }
 
 
 
@@ -153,8 +153,9 @@
             connector: connector(options)
         })
         const address = await getAccount(config)
+        accountElement.textContent = address.address
 
-        console.log(config, result, address)
+
     }
 
 
