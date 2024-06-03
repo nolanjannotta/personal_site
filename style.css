@@ -75,6 +75,7 @@ a {
 a:hover {
     text-decoration: underline;
     text-decoration-style: wavy;
+    text-decoration-thickness: .5px;
     /* text-shadow: -2px -3px 1px rgb(172, 172, 172); */
     transform: translate(2px,2px);
 }
