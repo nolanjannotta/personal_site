@@ -39,7 +39,7 @@
         <p > <small id="account"></small></p>
 
         <span id="connectButtons">
-            <input type="number" onchange="mint()" width="100px" placeholder="amount. up to 5" />
+            <input id="inputArray" placeholder="amount. up to 5" />
 
            <button id="metamask">metamask</button>
             <!-- <button id="walletConnect">walletConnect</button> -->
@@ -48,7 +48,8 @@
         
 
         <span id="mintButtons">
-            <input id="input" type="number" width="100px" placeholder="amount. up to 5" />
+            <!-- <input id="inputArray" type="number" placeholder="amount. up to 5" /> -->
+            
             <button id="mint">mint</button>
             <button id="disconnect">disconnect</button>
         </span>
@@ -63,7 +64,7 @@
 <script type="module">
     import { createPublicClient, http, getContract, formatEther } from 'https://esm.sh/viem'
     import { mainnet } from 'https://esm.sh/viem/chains'
-    import { createConfig, readContracts, connect, disconnect, getAccount } from 'https://esm.sh/@wagmi/core@2.x'
+    import { createConfig, readContracts, connect, disconnect, getAccount,simulateContract, writeContract } from 'https://esm.sh/@wagmi/core@2.x'
     import { injected, metaMask, walletConnect,coinbaseWallet  } from 'https://esm.sh/@wagmi/connectors'
 
 
@@ -76,9 +77,10 @@
     const accountElement = document.getElementById('account');
     const connectButtons = document.getElementById('connectButtons');
     const mintButtons = document.getElementById('mintButtons');
+    const inputArray = document.getElementById('inputArray');
 
     const deployedAt = document.getElementById('deployedAt').textContent = `\u25B9 deployed: May-05-2022`;
-    const calculator = "0x8c822FA282722eDcA512A9E94C591d3F52196eF2"
+    const snakeAddress = "0x8c822FA282722eDcA512A9E94C591d3F52196eF2"
     const abi = [{
         inputs: [
             {
@@ -156,23 +158,35 @@
 
 
     async function createInputArray(e) {
+        console.log(e)
         const inputArr = []
-        for(let i = 0; i <Number(e.event.target); i++) {
-            inputArr.push((Math.random() * 5)+1)
+        for(let i = 0; i <Number(e.data); i++) {
+            inputArr.push(Math.floor((Math.random() * 5)+1))
 
         }
-        console.log(inputArr)
+
+        const { request } = await simulateContract(config, {
+            abi,
+            address: snakeAddress,
+            functionName: 'mint',
+            args: [inputArr],
+            })
+            console.log(request)
+        // const hash = await writeContract(config, request)
         return inputArr
+
+        
 
         // const result = await getContract(config, {
         //         chain: mainnet,
-        //         address: calculator,
+        //         address: snakeAddress,
         //         abi,
         //         functionName: 'mint',
         //         args: [1]
 
     }
 
+    // console.log(createInputArray(5))
 
     async function disconnectWallet() {
         await disconnect(config)
@@ -202,23 +216,23 @@
         const results = await readContracts(config, {
             contracts: [
                 {
-                    address: calculator,
+                    address: snakeAddress,
                     abi,
                     functionName: 'tokenURI',
                     args: [1]
                 },
                 {
-                    address: calculator,
+                    address: snakeAddress,
                     abi,
                     functionName: 'totalSupply',
                 },
                 {
-                    address: calculator,
+                    address: snakeAddress,
                     abi,
                     functionName: 'maxSupply',
                 },
                 {
-                    address: calculator,
+                    address: snakeAddress,
                     abi,
                     functionName: 'price',
                 }
@@ -239,7 +253,10 @@
         // walletConnectElement.onclick = () => connectWallet(walletConnect)
         coinbaseWalletElement.onclick = () => connectWallet(coinbaseWallet, {appName: 'snake',preference: "all"})
         disconnectElement.onclick = () => disconnectWallet()
-        document.getElementById("input").onchange = createInputArray
+        
+        inputArray.oninput = createInputArray
+
+
         const address = await getAccount(config)
 
         if(address.address) {
