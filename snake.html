@@ -178,12 +178,14 @@
 
         }
         console.log(config)
+        const account = await getAccount(config)
 
         const { request } = await simulateContract(config, {
             address: snakeAddress,
             abi,
             functionName: 'mint',
             args: [inputArr],
+            account: account.address
             })
 
             console.log(request)
