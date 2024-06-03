@@ -47,7 +47,7 @@
         
 
         <span id="mintButtons">
-            <input type="number" width="100px" placeholder="amount. up to 5" />
+            <input type="number" onchange="mint" width="100px" placeholder="amount. up to 5" />
             <button id="mint">mint</button>
             <button id="disconnect">disconnect</button>
         </span>
@@ -153,6 +153,23 @@
     //     console.log(address)
     // }
 
+
+    async function mint(e) {
+        const inputArr = []
+        for(let i = 0; i <Number(e.event.target); i++) {
+            inputArr.push((Math.random() * 5)+1)
+
+        }
+        return inputArr
+
+        // const result = await getContract(config, {
+        //         chain: mainnet,
+        //         address: calculator,
+        //         abi,
+        //         functionName: 'mint',
+        //         args: [1]
+
+    }
 
 
     async function disconnectWallet() {
