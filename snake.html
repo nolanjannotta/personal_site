@@ -38,16 +38,17 @@
         </section>
         <p > <small id="account"></small></p>
 
-        <span id="connectbuttons">
+        <span id="connectButtons">
            <button id="metamask">metamask</button>
             <!-- <button id="walletConnect">walletConnect</button> -->
             <button id="coinbaseWallet">coinbaseWallet</button> 
         </span>
         
+
         <span id="mintButtons">
             
-        <button id="mint">mint</button>
-        <button id="disconnect">disconnect</button>
+            <button id="mint">mint</button>
+            <button id="disconnect">disconnect</button>
         </span>
 
     </main>
@@ -71,7 +72,8 @@
     const coinbaseWalletElement = document.getElementById('coinbaseWallet');
     const disconnectElement = document.getElementById('disconnect');
     const accountElement = document.getElementById('account');
-    const connectbuttons = document.getElementById('connectbuttons');
+    const connectButtons = document.getElementById('connectButtons');
+    const mintButtons = document.getElementById('mintButtons');
 
     const deployedAt = document.getElementById('deployedAt').textContent = `\u25B9 deployed: May-05-2022`;
     const calculator = "0x8c822FA282722eDcA512A9E94C591d3F52196eF2"
@@ -155,8 +157,8 @@
     async function disconnectWallet() {
         await disconnect(config)
         accountElement.textContent = ""
-        connectbuttons.style.display = "inline-block"
-        document.getElementById("mintButtons").style.display = "none"
+        connectButtons.style.display = "inline-block"
+        mintButtons.style.display = "none"
     }
 
 
@@ -166,8 +168,9 @@
         })
         const address = await getAccount(config)
         accountElement.textContent = `connected as: ${address.address}`
-        connectbuttons.style.display = "none"
-        document.getElementById("mintButtons").style.display = "inline-block"
+        connectButtons.style.display = "none"
+
+        mintButtons.style.display = "inline-block"
 
 
     }
@@ -221,14 +224,14 @@
 
         if(address.address) {
             accountElement.textContent = `connected as: ${address.address}`
-            connectbuttons.style.display = "none"
-            document.getElementById("mintButtons").style.display = "inline-block"
+            connectButtons.style.display = "none"
+            mintButtons.style.display = "inline-block"
         
         }
         else {
             accountElement.textContent = ""
-            connectbuttons.style.display = "inline-block"
-            document.getElementById("mintButtons").style.display = "none"
+            connectButtons.style.display = "inline-block"
+            mintButtons.style.display = "none"
         
         }
 
