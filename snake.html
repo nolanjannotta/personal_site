@@ -41,6 +41,7 @@
         <button id="walletConnect">walletConnect</button>
         <button id="coinbaseWallet">coinbaseWallet</button>
         <button id="disconnect">disconnect</button>
+        <button id="account">account</button>
 
     </main>
 
@@ -52,7 +53,7 @@
 <script type="module">
     import { createPublicClient, http, getContract, formatEther } from 'https://esm.sh/viem'
     import { mainnet } from 'https://esm.sh/viem/chains'
-    import { createConfig, readContracts, connect, disconnect } from 'https://esm.sh/@wagmi/core@2.x'
+    import { createConfig, readContracts, connect, disconnect, getAccount } from 'https://esm.sh/@wagmi/core@2.x'
     import { injected, metaMask, walletConnect,coinbaseWallet  } from 'https://esm.sh/@wagmi/connectors'
 
 
@@ -62,6 +63,7 @@
     const walletConnectElement = document.getElementById('walletConnect');
     const coinbaseWalletElement = document.getElementById('coinbaseWallet');
     const disconnectElement = document.getElementById('disconnect');
+    const accountElement = document.getElementById('account');
     const deployedAt = document.getElementById('deployedAt').textContent = `\u25B9 deployed: May-05-2022`;
     const calculator = "0x8c822FA282722eDcA512A9E94C591d3F52196eF2"
     const abi = [{
@@ -134,6 +136,12 @@
     })
 
 
+    async function getAddress() {
+        return await getAccount(config)
+        console.log(address)
+    }
+
+
 
     async function disconnectWallet() {
         await disconnect(config)
@@ -192,6 +200,9 @@
         walletConnectElement.onclick = () => connectWallet(walletConnect)
         coinbaseWalletElement.onclick = () => connectWallet(coinbaseWallet, {appName: 'Nolan Jannotta', appLogoUrl: 'https://personal-site-neon-ten.vercel.app/favicon.ico',preference: "all"})
         disconnectElement.onclick = () => disconnectWallet()
+        accountElement.onclick = () => getAddress()
+
+
     };
 
 
