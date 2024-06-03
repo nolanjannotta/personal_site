@@ -183,12 +183,7 @@
 
         const deployed = new Date("Mar-30-2022 04:01:02")
 
-        deployedAt.textContent = `\u25B9 deployed: ${deployed.toLocaleDateString('en-GB', {
-            weekday: 'long',
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric',
-        })}`
+        deployedAt.textContent = `\u25B9 deployed: Mar-30-2022`
 
 
         supply.textContent = `supply: ${Number(results[1].result)}/${Number(results[2].result)} \u2592\u2592\u2592 price: ${formatEther(results[3].result)} eth`
