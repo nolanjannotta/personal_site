@@ -206,9 +206,16 @@
         disconnectElement.onclick = () => disconnectWallet()
 
         const address = await getAccount(config)
-        accountElement.textContent = `connected as: ${address.address}`
-
+        if(address.address) {
+            accountElement.textContent = `connected as: ${address.address}`
         
+        }
+        else {
+            accountElement.textContent = ""
+        
+        }
+
+
         // accountElement.onclick = getAddress
 
 
