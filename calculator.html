@@ -23,7 +23,7 @@
 
     <main>
         <section id="about">
-            <h1>&#9711;&#9711;&#9711;&#9711;&#9711;&#9711;&#9711;&#9711;&#9711;&#9711;&#9711;calculators&#9711;&#9711;&#9711;&#9711;&#9711;&#9711;&#9711;&#9711;&#9711;&#9711;&#9711;</h1>
+            <h1>&#9711; Calculators</h1>
             <p>a fully onchain "NFT" from 2022. Fully functioning SVG stored onchain. comes in 5 colors. </p>
             <object width="500" id="image"></object>
             <p id="supply"></p>
@@ -130,47 +130,46 @@
                 name: 'Window Provider', 
                 provider: window.ethereum, 
                 } 
-  }, 
+        }, 
         }) })
-        console.log(results)
     }
 
 
     window.onload = async function() {
 
         const results = await readContracts(config, {
-        contracts:[
-            {
-                address: calculator,
-                abi,
-                functionName: 'tokenURI',
-                args: [1]
-            },
-            {
-                address: calculator,
-                abi,
-                functionName: 'totalSupply',
-            },
-            {
-                address: calculator,
-                abi,
-                functionName: 'maxSupply',
-            },
-            {
-                address: calculator,
-                abi,
-                functionName: 'price',
-            }
-        ]
-    })
+            contracts:[
+                {
+                    address: calculator,
+                    abi,
+                    functionName: 'tokenURI',
+                    args: [1]
+                },
+                {
+                    address: calculator,
+                    abi,
+                    functionName: 'totalSupply',
+                },
+                {
+                    address: calculator,
+                    abi,
+                    functionName: 'maxSupply',
+                },
+                {
+                    address: calculator,
+                    abi,
+                    functionName: 'price',
+                }
+            ]
+        })
 
-
+        console.log(results)
 
 
     const response = await fetch(results[0].result)
     const json = await response.json()
 
-    supply.textContent = `supply: ${Number(results[1].result)}/${Number(results[2].result)} | price: ${formatEther(results[3].result)} eth | 5 colors`
+    supply.textContent = `supply: ${Number(results[1].result)}/${Number(results[2].result)} \u2592\u2592\u2592 price: ${formatEther(results[3].result)} eth`
     image.setAttribute('data', json.image)
     connectButton.onclick = connectWallet
 
