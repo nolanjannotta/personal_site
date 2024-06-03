@@ -139,7 +139,10 @@
         const result = await connect(config, {
             connector: connector(options)
         })
+
+        console.log(config, result)
     }
+
 
 
     window.onload = async function () {
