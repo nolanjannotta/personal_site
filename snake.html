@@ -36,12 +36,13 @@
             <object width="500" id="image"></object>
             <p id="supply">loading...</p>
         </section>
+        <p id="account">account</p>
 
         <button id="metamask">metamask</button>
         <button id="walletConnect">walletConnect</button>
         <button id="coinbaseWallet">coinbaseWallet</button>
         <button id="disconnect">disconnect</button>
-        <button id="account">account</button>
+        
 
     </main>
 
@@ -145,6 +146,7 @@
 
     async function disconnectWallet() {
         await disconnect(config)
+        accountElement.textContent = ""
     }
 
 
@@ -153,7 +155,7 @@
             connector: connector(options)
         })
         const address = await getAccount(config)
-        accountElement.textContent = address.address
+        accountElement.textContent = `connected as: ${address.address}`
 
 
     }
