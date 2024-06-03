@@ -135,6 +135,9 @@
 
 
 
+    async function disconnectWallet() {
+        await disconnect(config)
+    }
 
 
     async function connectWallet(connector, options = {}) {
@@ -188,7 +191,7 @@
         metamask.onclick = () => connectWallet(injected)
         walletConnectElement.onclick = () => connectWallet(walletConnect)
         coinbaseWalletElement.onclick = () => connectWallet(coinbaseWallet, {appName: 'Nolan Jannotta', appLogoUrl: 'https://personal-site-neon-ten.vercel.app/favicon.ico'})
-        disconnectElement.onclick = () => disconnect()
+        disconnectElement.onclick = () => disconnectWallet()
     };
 
 
