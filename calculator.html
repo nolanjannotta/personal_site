@@ -55,7 +55,7 @@
     const image = document.getElementById('image');
     const supply = document.getElementById('supply');
     const connectButton = document.getElementById('connectWallet');
-    const deployedAt = document.getElementById('deployedAt');
+    const deployedAt = document.getElementById('deployedAt').textContent = `\u25B9 deployed: Mar-30-2022`;
 
 
 
@@ -181,7 +181,7 @@
         const response = await fetch(results[0].result)
         const json = await response.json()
 
-        deployedAt.textContent = `\u25B9 deployed: Mar-30-2022`
+        // deployedAt.textContent = `\u25B9 deployed: Mar-30-2022`
 
 
         supply.textContent = `supply: ${Number(results[1].result)}/${Number(results[2].result)} \u2592\u2592\u2592 price: ${formatEther(results[3].result)} eth`
