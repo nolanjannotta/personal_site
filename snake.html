@@ -216,7 +216,7 @@
         image.setAttribute('data', json.image)
 
         metamask.onclick = () => connectWallet(injected)
-        walletConnectElement.onclick = () => connectWallet(walletConnect)
+        // walletConnectElement.onclick = () => connectWallet(walletConnect)
         coinbaseWalletElement.onclick = () => connectWallet(coinbaseWallet, {appName: 'Nolan Jannotta', appLogoUrl: 'https://personal-site-neon-ten.vercel.app/favicon.ico',preference: "all"})
         disconnectElement.onclick = () => disconnectWallet()
 
