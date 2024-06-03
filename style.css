@@ -1,7 +1,6 @@
-
 @font-face {
     font-family: Source Code Pro;
-    src:local("./SourceCodePro-VariableFont_wght.ttf");
+    src: local("./SourceCodePro-VariableFont_wght.ttf");
 }
 
 
@@ -13,16 +12,16 @@ body {
     line-height: 1.6;
     font-size: larger;
 
-    
+
 }
 
 
 
 @keyframes shadow {
     30% {
-       text-shadow: -3px -5px 3px black ;
+        text-shadow: -3px -5px 2px black;
     }
- }
+}
 
 
 
@@ -30,8 +29,10 @@ body {
 
 
 
-p, li, h1 {
-    text-shadow: -2px -2px 2px  #c8c8c8;
+p,
+li,
+h1 {
+    text-shadow: -2px -2px 2px #c8c8c8;
 
 }
 
@@ -44,10 +45,13 @@ p, li, h1 {
     list-style: none;
 
 }
+
 .list {
-    list-style: none; /* "\27A2"; */
+    list-style: none;
+    /* "\27A2"; */
 
 }
+
 li {
     margin: 5px;
 }
@@ -56,21 +60,22 @@ li {
     text-decoration: underline;
     text-decoration-thickness: .5px;
     text-decoration-style: wavy;
-    
+
 }
 
 
 
 a {
-    
+
     text-decoration: none;
+    display: inline-block;
 }
 
 a:hover {
     text-decoration: underline;
     text-decoration-style: wavy;
-    animation-timing-function: ease-in-out;
-    animation: shadow 5s;
+    /* text-shadow: -2px -3px 1px rgb(172, 172, 172); */
+    transform: translate(1.5px,1.5px);
 }
 
 footer {
@@ -79,7 +84,7 @@ footer {
 
 .about {
 
-    max-width: 40%;
+    max-width: 30%;
 
 }
 
@@ -96,21 +101,23 @@ footer {
     0% {
         left: 0;
         top: 40%;
-        color:black;
+        color: black;
         /* display: inline  */
-      }
-      50% {
+    }
+
+    50% {
         left: 100%;
         top: 70%;
-        color:black;
-        
-      }
-      100% {
-        left: 0;   
-        top: 40%; 
-        color:black;
-      }
- }
+        color: black;
+
+    }
+
+    100% {
+        left: 0;
+        top: 40%;
+        color: black;
+    }
+}
 
 
 
@@ -122,7 +129,7 @@ footer {
     left: 0;
     color: white;
     /* color: white; */
-    
+
 }
 
 
@@ -132,8 +139,9 @@ footer {
     .about {
 
         max-width: 90%;
-    
+
     }
+
     .flying {
         animation: flying 30s infinite;
         animation-direction: normal;
@@ -143,27 +151,32 @@ footer {
         color: white;
 
     }
-    
+
 }
+
+/* section > h1 {
+    transition-duration: 1s;
+} */
+
+/* section > h1:hover {
+    transform: rotatex(-360deg);
+} */
 
 
 
 @media (max-width: 439px) {
     body {
-      font-size: small;  
-      padding: 20px 25px;
+        font-size: small;
+        padding: 20px 25px;
     }
-    
+
 }
 
 @media (max-width: 285px) {
     body {
-      font-size: x-small;  
+        font-size: x-small;
     }
 
 
-    
+
 }
-
-
-
