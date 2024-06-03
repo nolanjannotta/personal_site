@@ -179,8 +179,8 @@
         }
 
         const { request } = await simulateContract(config, {
-            abi,
             address: snakeAddress,
+            abi,
             functionName: 'mint',
             args: [inputArr],
             })
