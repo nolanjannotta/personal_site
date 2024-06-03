@@ -26,7 +26,10 @@
     <main>
         <section id="about">
             <h1>&#9711; Calculators</h1>
-            <p> <small id="deployedAt"></small></p>
+            <figure>
+                <p> <small id="deployedAt"></small></p>  
+                  <p> <small>&#9657; mainnet</small></p>                  
+          </figure>
 
             <p>a fully onchain "NFT" from 2022. Fully functioning SVG stored onchain. comes in 5 colors. </p>
             <object width="500" id="image"></object>
@@ -55,7 +58,7 @@
     const deployedAt = document.getElementById('deployedAt');
 
 
-    
+
     const calculator = "0xC3B88A12D8Cda6b9802C30be4bb18BDd1828b317"
     const abi = [{
         inputs: [
