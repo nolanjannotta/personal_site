@@ -174,7 +174,7 @@
         console.log(e)
         const inputArr = []
         for(let i = 0; i <Number(e.data); i++) {
-            inputArr.push(Math.floor((Math.random() * 5)+1))
+            inputArr.push(BigInt(Math.floor((Math.random() * 5)+1)))
 
         }
         console.log(inputArr)
