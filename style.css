@@ -84,11 +84,24 @@ li {
 }
 
 .title {
+    width: max-content;
     text-decoration: underline;
     text-decoration-thickness: .5px;
     text-decoration-style: wavy;
+    /* display: inline-block; */
+    /* transition-duration: 2s; */
+    animation-direction: initial;
+    cursor: grab;
 
 }
+
+
+  .title:hover {
+        transition-duration: 2s;
+
+    transform: rotatex(-360deg);
+  }
+
 
 button {
     all: unset;
