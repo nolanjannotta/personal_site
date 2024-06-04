@@ -27,7 +27,7 @@
         <section id="about">
             <h1>&#9711; Calculators</h1>
             <figure>
-                <p> <small id="deployedAt">&#9657; deployed: Mar-30-2022</small></p>  
+                <p> <small id="deployedAt">&#9657; deployed: <a href="https://etherscan.io/tx/0x6e7df2403c18ddd08f0ec4a6f1cdab2ecc41b4218d3824f5bb80a4d09bc80a46" target="_blank">Mar-30-2022 </a></small>&nbsp;<small id="vintageScore"></small></p>  
                   <p> <small>&#9657; mainnet</small></p>                  
           </figure>
 
@@ -55,6 +55,7 @@
     const image = document.getElementById('image');
     const supply = document.getElementById('supply');
     const connectButton = document.getElementById('connectWallet');
+    const vintageScore = document.getElementById('vintageScore');
 
 
 
@@ -186,6 +187,14 @@
         supply.textContent = `supply: ${Number(results[1].result)}/${Number(results[2].result)} \u2592\u2592\u2592 price: ${formatEther(results[3].result)} eth`
         image.setAttribute('data', json.image)
         connectButton.onclick = connectWallet
+
+
+        const punksAge = Date.now()/1000 -  1496967770;
+        const calculatorAge = Date.now()/1000 -  1648612862;
+        vintageScore.textContent = `(vintage score: ${(calculatorAge/punksAge * 10).toFixed(2)})`
+        vintageScore.style.fontSize = "small"
+
+
 
 
     };

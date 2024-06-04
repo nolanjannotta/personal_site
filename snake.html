@@ -2,15 +2,13 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta property="og:title" content="Nolan Jannotta" />
     <title>Nolan Jannotta</title>
     <link rel="icon" href="./icon.svg" type="image/svg+xml">
-    <link href="./style.css" rel="stylesheet">
-
-
-
-</head>
+    <link href="./style.css" rel="stylesheet" />
+  </head>
 
 <body>
     <header>
@@ -24,20 +22,34 @@
     </header>
 
     <main>
-        <section id="about">
+        <section class="about">
             <h1>&#9711; Snake</h1>
             <figure>
-                  <p> <small id="deployedAt">&#9657; deployed: <a href="https://etherscan.io/tx/0x12e0cd7ae8cccd34ab201dfce8dde6092f478932c3383885594ad30ab6f68fbb" target="_blank">May-05-2022</a></small></p>  
+                  <p> <small id="deployedAt">&#9657; deployed: <a href="https://etherscan.io/tx/0x12e0cd7ae8cccd34ab201dfce8dde6092f478932c3383885594ad30ab6f68fbb" target="_blank">May-05-2022</a></small> &nbsp; <small id="vintageScore"></small></p>  
                     <p> <small>&#9657; mainnet</small></p>                  
             </figure>
+
+            <span class="corners">
+                <span>&#8988;</span>
+                <span>&#8989;</span>
+              </span>
             
             <p>a fully onchain game of snake. Fully functioning SVG stored onchain. comes in 5 colors schemes.</p>
             <p>&#10036;<b> known bug:</b> food is able to spawn underneath the snake. &#10036;</p>
+            <span class="corners">
+                <span>&#8990;</span>
+                <span>&#8991;</span>
+              </span>
+
+        </section>
+
+        <section id="portfolio">
+            
             <object width="500" id="image"></object>
             <p id="supply">loading...</p>
         </section>
         
-
+        <section id="contact">
         <span id="connectButtons">
            <button id="metamask">metamask</button>
             <button id="coinbaseWallet">coinbaseWallet</button> 
@@ -60,7 +72,7 @@
             </span>
             
         </span>
-
+        </section>
     </main>
 
     <footer>
@@ -83,7 +95,9 @@
     const connectButtons = document.getElementById('connectButtons');
     const mintButtons = document.getElementById('mintButtons');
     const inputArray = document.getElementById('inputArray');
+    const vintageScore = document.getElementById('vintageScore');
 
+    console.log(document.location.origin)
     const snakeAddress = "0x8c822FA282722eDcA512A9E94C591d3F52196eF2"
     const abi = [{
         inputs: [
@@ -235,6 +249,8 @@
 
     window.onload = async function () {
 
+
+
         const results = await readContracts(config, {
             contracts: [
                 {
@@ -278,6 +294,13 @@
         mintButtons.style.display = "none"
 
         const address = await getAccount(config)
+
+        const punksAge = Date.now()/1000 -  1496967770;
+        const snakeAge = Date.now()/1000 -  1651739467;
+        vintageScore.textContent = `vintage score: ${(snakeAge/punksAge * 10).toFixed(2)}`
+        vintageScore.style.fontSize = "small"
+
+
 
         // if(address.address) {
         //     accountElement.textContent = `connected as: ${address.address}`
