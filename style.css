@@ -71,6 +71,8 @@ object {
 
 }
 
+
+
 .list {
     list-style: none;
     /* "\27A2"; */
@@ -224,6 +226,9 @@ footer {
 @media (max-width: 285px) {
     body {
         font-size: x-small;
+    }
+    .list {
+        margin: 0;
     }
 
 
