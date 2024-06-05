@@ -4,8 +4,8 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta property="og:title" content="Nolan Jannotta" />
-    <title>Nolan Jannotta</title>
+    <meta property="og:title" content="nj" />
+    <title>nj</title>
     <link rel="icon" href='data:image/svg+xml;base64,PHN2ZyBpZD0ic3ZnIiB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPScxMjAnIGhlaWdodD0nMTIwJz4gPHRleHQgdGV4dC1hbmNob3I9Im1pZGRsZSIgZG9taW5hbnQtYmFzZWxpbmU9Im1pZGRsZSIgeD0iNjAiIHk9IjYwIiBzdHlsZT0iZm9udC1zaXplOiAxMjBweDsiIGZpbGw9IiNmOGY0ZTkiPiAmIzQ2MDsgPC90ZXh0PiA8L3N2Zz4=' type="image/svg+xml">
     <link href="../style.css" rel="stylesheet" />
   </head>
@@ -26,7 +26,8 @@
             <h1>&#9711; Snake</h1>
             <figure>
                   <p> <small id="deployedAt">&#9657; deployed: <a href="https://etherscan.io/tx/0x12e0cd7ae8cccd34ab201dfce8dde6092f478932c3383885594ad30ab6f68fbb" target="_blank">May-05-2022</a></small> <small id="vintageScore"></small></p>  
-                    <p> <small>&#9657; mainnet</small></p>                  
+                    <p><small>&#9657; mainnet </small> </p>     
+                    <p> <small>&#9657; <a href="https://opensea.io/collection/sssnake" target="_blank">opensea &#8599;</a></small></p>             
             </figure>
 
             <span class="corners">
@@ -91,116 +92,115 @@
 <script type="module">
     import { createPublicClient, http, getContract, formatEther,parseEther  } from 'https://esm.sh/viem'
     import { mainnet } from 'https://esm.sh/viem/chains'
-    import { createConfig, readContracts,readContract,  connect, disconnect, getAccount,simulateContract, writeContract,getBalance,waitForTransactionReceipt   } from 'https://esm.sh/@wagmi/core@2.x'
+    import { createConfig, readContracts,readContract,  connect, disconnect, getAccount,simulateContract, writeContract,getBalance,waitForTransactionReceipt,switchChain} from 'https://esm.sh/@wagmi/core@2.x'
     import { injected, metaMask,coinbaseWallet  } from 'https://esm.sh/@wagmi/connectors'
 
-    // const image = document.getElementById('image');
-    // const supply = document.getElementById('supply');
-    // const metamask = document.getElementById('metamask');
-    // const coinbaseWalletElement = document.getElementById('coinbaseWallet');
-    // const disconnectElement = document.getElementById('disconnect');
     const accountElement = document.getElementById('account');
     const connectButtons = document.getElementById('connectButtons');
     const mintButtons = document.getElementById('mintButtons');
     const mintAmount = document.getElementById('mintAmount');
-    // const vintageScore = document.getElementById('vintageScore');
 
     const snakeAddress = "0x8c822FA282722eDcA512A9E94C591d3F52196eF2"
     const abi = [
-        {
-            inputs: [
-                {
-                    internalType: "uint256",
-                    name: "amount",
-                    type: "uint256"
-                },
-                {
-                    internalType: "address",
-                    name: "user",
-                    type: "address"
-                }],
-            name: "getFinalPrice", outputs:
-                [
+            {
+                inputs: [
                     {
                         internalType: "uint256",
-                        name: "", type: "uint256"
+                        name: "amount",
+                        type: "uint256"
+                    },
+                    {
+                        internalType: "address",
+                        name: "user",
+                        type: "address"
                     }],
-            stateMutability: "view",
-            type: "function"
-        },
-        {
-            inputs: [
-                {
-                    "internalType": "uint256",
-                    "name": "id",
-                    "type": "uint256"
-                }
-            ],
-        name: "tokenURI",
-        outputs: [
+                name: "getFinalPrice", outputs:
+                    [
+                        {
+                            internalType: "uint256",
+                            name: "", type: "uint256"
+                        }],
+                stateMutability: "view",
+                type: "function"
+            },
             {
-                internalType: "string",
-                name: "",
-                type: "string"
-            }
-        ],
-        stateMutability: "view",
-        type: "function"
-    },
-    {
-        inputs: [],
-        name: "totalSupply",
-        outputs: [
+                inputs: [
+                    {
+                        "internalType": "uint256",
+                        "name": "id",
+                        "type": "uint256"
+                    }
+                ],
+                name: "tokenURI",
+                outputs: [
+                    {
+                        internalType: "string",
+                        name: "",
+                        type: "string"
+                    }
+                ],
+                stateMutability: "view",
+                type: "function"
+            },
             {
-                internalType: "uint256",
-                name: "",
-                type: "uint256"
-            }
-        ],
-        stateMutability: "view",
-        type: "function"
-    },
-    {
-        inputs: [],
-        name: "maxSupply",
-        outputs: [
+                inputs: [],
+                name: "totalSupply",
+                outputs: [
+                    {
+                        internalType: "uint256",
+                        name: "",
+                        type: "uint256"
+                    }
+                ],
+                stateMutability: "view",
+                type: "function"
+            },
             {
-                internalType: "uint256",
-                name: "",
-                type: "uint256"
-            }
-        ],
-        stateMutability: "view",
-        type: "function"
-    },
-    {
-        inputs: [],
-        name: "price",
-        outputs: [
+                inputs: [],
+                name: "maxSupply",
+                outputs: [
+                    {
+                        internalType: "uint256",
+                        name: "",
+                        type: "uint256"
+                    }
+                ],
+                stateMutability: "view",
+                type: "function"
+            },
             {
-                internalType: "uint256",
-                name: "",
-                type: "uint256"
-            }
-        ],
-        stateMutability: "view",
-        type: "function"
-    },
-    {
-        inputs: [
+                inputs: [],
+                name: "price",
+                outputs: [
+                    {
+                        internalType: "uint256",
+                        name: "",
+                        type: "uint256"
+                    }
+                ],
+                stateMutability: "view",
+                type: "function"
+            },
             {
-                internalType: "uint256[]",
-                name: "schemeIds",
-                type: "uint256[]"
+                inputs: [
+                    {
+                        internalType: "uint256[]",
+                        name: "schemeIds",
+                        type: "uint256[]"
+                    }
+                ],
+                name: "buySnake",
+                outputs: [],
+                stateMutability: "payable",
+                type: "function"
             }
-        ],
-        name: "buySnake",
-        outputs: [],
-        stateMutability: "payable",
-        type: "function"
-    },
 
-    ]
+        ]
+
+    const contract = {
+        address: snakeAddress,
+        abi
+    }
 
     const config = createConfig({
         chains: [mainnet],
@@ -209,12 +209,6 @@
         }
 
     })
-
-
-    // async function getAddress() {
-    //     return await getAccount(config)
-    //     console.log(address)
-    // }
 
     async function updatePrice(amount) {
         const account = await getAccount(config)
@@ -230,82 +224,64 @@
         })
 
         document.getElementById('price').textContent = `\u27E6price: ${formatEther(results)} eth\u27E7`
-
-
-        return formatEther(results)
     }
 
 
-    async function mint() {
-        const amount = Number(mintAmount.textContent)
-        if(amount < 1 || amount > 5) {
-            // handle error case
-            return
+    // async function mint() {
+    //     const amount = Number(mintAmount.textContent)
+    //     if(amount < 1 || amount > 5) {
+    //         // handle error case
+    //         return
 
-        }
+    //     }
 
-        const inputArr = []
+    //     const inputArr = []
         
-        for(let i = 0; i <amount; i++) {
-            inputArr.push(BigInt(Math.floor((Math.random() * 5)+1)))
+    //     for(let i = 0; i <amount; i++) {
+    //         inputArr.push(BigInt(Math.floor((Math.random() * 5)+1)))
 
-        }
+    //     }
 
-        const account = await getAccount(config)
-        const price = await readContract(config, {
-            address: snakeAddress,
-            abi,
-            functionName: 'getFinalPrice',
-            args: [amount, account.address]
+    //     const account = await getAccount(config)
+    //     const price = await readContract(config, {
+    //         address: snakeAddress,
+    //         abi,
+    //         functionName: 'getFinalPrice',
+    //         args: [amount, account.address]
 
 
-            })
+    //         })
 
         
-        try {
-             const { request } = await simulateContract(config, {
-                address: snakeAddress,
-                abi,
-                functionName: 'buySnake',
-                args: [inputArr],
-                value: price,
-                })
+    //     try {
+    //          const { request } = await simulateContract(config, {
+    //             address: snakeAddress,
+    //             abi,
+    //             functionName: 'buySnake',
+    //             args: [inputArr],
+    //             value: price,
+    //             })
             
-                const result = await writeContract(config, request)
-                document.getElementById('mintMessage').innerHTML = `<p> <a href="https://etherscan.io/tx/${result}" target="_blank">transaction submitted!</a> refresh page for updates. </p>`
-                console.log(result)
-
+    //             const result = await writeContract(config, request)
+    //             document.getElementById('mintMessage').innerHTML = `<p> <a href="https://etherscan.io/tx/${result}" target="_blank">transaction submitted!</a> refresh page for updates. </p>`
 
                 
-        }catch(e) {
-            document.getElementById('mintMessage').textContent = "error while simulating transaction. Please try again later."
+    //     } catch(e) {
+    //         document.getElementById('mintMessage').textContent = "error while simulating transaction. Please try again later."
 
-        }
-        
-       
-
-        // const hash = await writeContract(config, request)
-        return inputArr
-
+    //     }
         
 
-        // const result = await getContract(config, {
-        //         chain: mainnet,
-        //         address: snakeAddress,
-        //         abi,
-        //         functionName: 'mint',
-        //         args: [1]
-
-    }
+    // }
 
     // console.log(createInputArray(5))
 
-    async function disconnectWallet() {
-        await disconnect(config)
-        accountElement.textContent = ""
-        connectButtons.style.display = "inline"
-        mintButtons.style.display = "none"
-    }
+    // async function disconnectWallet() {
+    //     await disconnect(config)
+    //     accountElement.textContent = ""
+    //     connectButtons.style.display = "inline"
+    //     mintButtons.style.display = "none"
+    // }
 
 
     async function connectWallet(connector, options = {}) {
@@ -334,24 +310,20 @@
         const results = await readContracts(config, {
             contracts: [
                 {
-                    address: snakeAddress,
-                    abi,
+                    ...contract,
                     functionName: 'tokenURI',
                     args: [1]
                 },
                 {
-                    address: snakeAddress,
-                    abi,
+                    ...contract,
                     functionName: 'totalSupply',
                 },
                 {
-                    address: snakeAddress,
-                    abi,
+                    ...contract,
                     functionName: 'maxSupply',
                 },
                 {
-                    address: snakeAddress,
-                    abi,
+                    ...contract,
                     functionName: 'price',
                 }
             ]
@@ -367,17 +339,18 @@
 
         document.getElementById('metamask').onclick = () => connectWallet(injected)
         document.getElementById('coinbaseWallet').onclick = () => connectWallet(coinbaseWallet, {appName: 'snake',preference: "eoaOnly"})
-        document.getElementById('disconnect').onclick = () => disconnectWallet()
+        document.getElementById('disconnect').onclick = async () => {
+            await disconnect(config)
+            accountElement.textContent = ""
+            connectButtons.style.display = "inline"
+            mintButtons.style.display = "none"
+        }
         
-        // inputArray.oninput = createInputArray
-
         mintButtons.style.display = "none"
-
-        // const address = await getAccount(config)
 
         const punksAge = Date.now()/1000 -  1496967770;
         const snakeAge = Date.now()/1000 -  1651739467;
-        document.getElementById('vintageScore').textContent = `(vintage score: ${(snakeAge/punksAge * 10).toFixed(2)})`
+        document.getElementById('vintageScore').textContent = `(vintage rating: ${(snakeAge/punksAge * 10).toFixed(2)})`
         document.getElementById('vintageScore').style.fontSize = ".6em"
 
 
@@ -390,25 +363,51 @@
             updatePrice(Number(mintAmount.textContent))
         }
 
-        document.getElementById("mint").onclick = mint
+        document.getElementById("mint").onclick = async () => {
+            const amount = Number(mintAmount.textContent)
+            if (amount < 1 || amount > 5) {
+                // handle error case
+                return
+
+            }
+
+            const inputArr = []
+
+            for (let i = 0; i < amount; i++) {
+                inputArr.push(BigInt(Math.floor((Math.random() * 5) + 1)))
+
+            }
+
+            const account = await getAccount(config)
+            const price = await readContract(config, {
+                address: snakeAddress,
+                abi,
+                functionName: 'getFinalPrice',
+                args: [amount, account.address]
 
 
-
-        // if(address.address) {
-        //     accountElement.textContent = `connected as: ${address.address}`
-        //     connectButtons.style.display = "none"
-        //     mintButtons.style.display = "inline"
-        
-        // }
-        // else {
-        //     accountElement.textContent = ""
-        //     connectButtons.style.display = "inline"
-        //     mintButtons.style.display = "none"
-        
-        // }
+            })
 
 
-        // accountElement.onclick = getAddress
+            try {
+                const { request } = await simulateContract(config, {
+                    address: snakeAddress,
+                    abi,
+                    functionName: 'buySnake',
+                    args: [inputArr],
+                    value: price,
+                })
+
+                const result = await writeContract(config, request)
+                document.getElementById('mintMessage').innerHTML = `<p> <a href="https://etherscan.io/tx/${result}" target="_blank">transaction submitted!</a> refresh page for updates. </p>`
+
+
+            } catch (e) {
+                document.getElementById('mintMessage').textContent = "error while simulating transaction. Please try again later."
+
+            }
+
+        }
 
 
     };
