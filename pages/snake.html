@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta property="og:title" content="Nolan Jannotta" />
     <title>Nolan Jannotta</title>
-    <link rel="icon" href="../icon.svg" type="image/svg+xml">
+    <link rel="icon" href='data:image/svg+xml;base64,PHN2ZyBpZD0ic3ZnIiB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPScxMjAnIGhlaWdodD0nMTIwJz4gPHRleHQgdGV4dC1hbmNob3I9Im1pZGRsZSIgZG9taW5hbnQtYmFzZWxpbmU9Im1pZGRsZSIgeD0iNjAiIHk9IjYwIiBzdHlsZT0iZm9udC1zaXplOiAxMjBweDsiIGZpbGw9IiNmOGY0ZTkiPiAmIzQ2MDsgPC90ZXh0PiA8L3N2Zz4=' type="image/svg+xml">
     <link href="../style.css" rel="stylesheet" />
   </head>
 
@@ -38,6 +38,7 @@
                 "Onchain" in this case means that the SVG code 
                 and javascript code is stored in the smart contract. Once the SVG is returned from the contract, 
                 your browser handles the rest and runs the game. </p>
+            <p>tip: owners of <a href="/pages/calculator.html">calculators</a> get an automatic 20% discount. </p>
             <p>&#10036;<b> known bug:</b> food is able to spawn underneath the snake. &#10036;</p>
             <span class="corners">
                 <span>&#8990;</span>
@@ -54,8 +55,8 @@
         
         <section id="contact">
         <span id="connectButtons">
-           <button id="metamask">metamask</button>
-            <button id="coinbaseWallet">coinbase wallet</button> 
+           | <button id="metamask">metamask</button> |
+            <button id="coinbaseWallet">coinbase wallet</button> |
         </span>
         
 
@@ -65,13 +66,17 @@
             <p > <small id="balance"></small></p>
 
                 <span class="controls">
-                    <p class="inputButtons">&#12308;-&#12309;</p>
-                    <span>4</span>
-                    <p class="inputButtons">&#12308;+&#12309;</p>
+                    <p id="decrement" class="inputButtons">&#12308;-&#12309;</p>
+                    <span id="mintAmount">1</span>
+                    <p id="increment" class="inputButtons">&#12308;+&#12309;</p>
                 
                 </span>
+                <span id="price"> &#10214;price:&#10215;</span> &nbsp;&nbsp;
             <span>
-                <button id="mint">mint</button>
+                <button id="mint">&#10214;mint&#10215;</button>
+            </span>
+            <span>
+                <p id="mintMessage"></p>
             </span>
             
         </span>
@@ -86,30 +91,51 @@
 <script type="module">
     import { createPublicClient, http, getContract, formatEther,parseEther  } from 'https://esm.sh/viem'
     import { mainnet } from 'https://esm.sh/viem/chains'
-    import { createConfig, readContracts, connect, disconnect, getAccount,simulateContract, writeContract,getBalance  } from 'https://esm.sh/@wagmi/core@2.x'
+    import { createConfig, readContracts,readContract,  connect, disconnect, getAccount,simulateContract, writeContract,getBalance,waitForTransactionReceipt   } from 'https://esm.sh/@wagmi/core@2.x'
     import { injected, metaMask,coinbaseWallet  } from 'https://esm.sh/@wagmi/connectors'
 
-    const image = document.getElementById('image');
-    const supply = document.getElementById('supply');
-    const metamask = document.getElementById('metamask');
-    const coinbaseWalletElement = document.getElementById('coinbaseWallet');
-    const disconnectElement = document.getElementById('disconnect');
+    // const image = document.getElementById('image');
+    // const supply = document.getElementById('supply');
+    // const metamask = document.getElementById('metamask');
+    // const coinbaseWalletElement = document.getElementById('coinbaseWallet');
+    // const disconnectElement = document.getElementById('disconnect');
     const accountElement = document.getElementById('account');
     const connectButtons = document.getElementById('connectButtons');
     const mintButtons = document.getElementById('mintButtons');
-    const inputArray = document.getElementById('inputArray');
-    const vintageScore = document.getElementById('vintageScore');
+    const mintAmount = document.getElementById('mintAmount');
+    // const vintageScore = document.getElementById('vintageScore');
 
-    console.log(document.location.origin)
     const snakeAddress = "0x8c822FA282722eDcA512A9E94C591d3F52196eF2"
-    const abi = [{
-        inputs: [
-            {
-                "internalType": "uint256",
-                "name": "id",
-                "type": "uint256"
-            }
-        ],
+    const abi = [
+        {
+            inputs: [
+                {
+                    internalType: "uint256",
+                    name: "amount",
+                    type: "uint256"
+                },
+                {
+                    internalType: "address",
+                    name: "user",
+                    type: "address"
+                }],
+            name: "getFinalPrice", outputs:
+                [
+                    {
+                        internalType: "uint256",
+                        name: "", type: "uint256"
+                    }],
+            stateMutability: "view",
+            type: "function"
+        },
+        {
+            inputs: [
+                {
+                    "internalType": "uint256",
+                    "name": "id",
+                    "type": "uint256"
+                }
+            ],
         name: "tokenURI",
         outputs: [
             {
@@ -190,27 +216,74 @@
     //     console.log(address)
     // }
 
+    async function updatePrice(amount) {
+        const account = await getAccount(config)
 
-    async function createInputArray(e) {
-        console.log(e)
+        const results = await readContract(config, {
+
+            address: snakeAddress,
+            abi,
+            functionName: 'getFinalPrice',
+            args: [amount, account.address]
+        
+
+        })
+
+        document.getElementById('price').textContent = `\u27E6price: ${formatEther(results)} eth\u27E7`
+
+
+        return formatEther(results)
+    }
+
+
+    async function mint() {
+        const amount = Number(mintAmount.textContent)
+        if(amount < 1 || amount > 5) {
+            // handle error case
+            return
+
+        }
+
         const inputArr = []
-        for(let i = 0; i <Number(e.data); i++) {
+        
+        for(let i = 0; i <amount; i++) {
             inputArr.push(BigInt(Math.floor((Math.random() * 5)+1)))
 
         }
-        console.log(inputArr)
+
         const account = await getAccount(config)
+        const price = await readContract(config, {
+            address: snakeAddress,
+            abi,
+            functionName: 'getFinalPrice',
+            args: [amount, account.address]
 
-        // const { request } = await simulateContract(config, {
-        //     address: snakeAddress,
-        //     abi,
-        //     functionName: 'buySnake',
-        //     args: [inputArr],
-        //     value: parseEther(".04"),
-        //     // account: account.address
-        //     })
 
-        //     console.log(request)
+            })
+
+        
+        try {
+             const { request } = await simulateContract(config, {
+                address: snakeAddress,
+                abi,
+                functionName: 'buySnake',
+                args: [inputArr],
+                value: price,
+                })
+            
+                const result = await writeContract(config, request)
+                document.getElementById('mintMessage').innerHTML = `<p> <a href="https://etherscan.io/tx/${result}" target="_blank">transaction submitted!</a> refresh page for updates. </p>`
+                console.log(result)
+
+
+                
+        }catch(e) {
+            document.getElementById('mintMessage').textContent = "error while simulating transaction. Please try again later."
+
+        }
+        
+       
+
         // const hash = await writeContract(config, request)
         return inputArr
 
@@ -239,11 +312,16 @@
         const result = await connect(config, {
             connector: connector(options)
         })
+        if(result.accounts.length === 0) {
+            return
+        }
         const balance = await getBalance(config, {address: result.accounts[0]})
         document.getElementById('balance').textContent = `balance: ${balance.formatted} eth`
         accountElement.textContent = `connected as: ${result.accounts[0]}`
         connectButtons.style.display = "none"
         mintButtons.style.display = "inline"
+        updatePrice(1)
+
 
 
     }
@@ -251,7 +329,6 @@
 
 
     window.onload = async function () {
-
 
 
         const results = await readContracts(config, {
@@ -285,23 +362,35 @@
         const response = await fetch(results[0].result)
         const json = await response.json()
 
-        supply.textContent = `supply: ${Number(results[1].result)}/${Number(results[2].result)} \u2592\u2592\u2592 price: ${formatEther(results[3].result)} eth`
-        image.setAttribute('data', json.image)
+        document.getElementById('supply').textContent = `supply: ${Number(results[1].result)}/${Number(results[2].result)} | price: ${formatEther(results[3].result)} eth`
+        document.getElementById('image').setAttribute('data', json.image)
 
-        metamask.onclick = () => connectWallet(injected)
-        coinbaseWalletElement.onclick = () => connectWallet(coinbaseWallet, {appName: 'snake',preference: "all"})
-        disconnectElement.onclick = () => disconnectWallet()
+        document.getElementById('metamask').onclick = () => connectWallet(injected)
+        document.getElementById('coinbaseWallet').onclick = () => connectWallet(coinbaseWallet, {appName: 'snake',preference: "eoaOnly"})
+        document.getElementById('disconnect').onclick = () => disconnectWallet()
         
         // inputArray.oninput = createInputArray
 
         mintButtons.style.display = "none"
 
-        const address = await getAccount(config)
+        // const address = await getAccount(config)
 
         const punksAge = Date.now()/1000 -  1496967770;
         const snakeAge = Date.now()/1000 -  1651739467;
-        vintageScore.textContent = `(vintage score: ${(snakeAge/punksAge * 10).toFixed(2)})`
-        vintageScore.style.fontSize = ".6em"
+        document.getElementById('vintageScore').textContent = `(vintage score: ${(snakeAge/punksAge * 10).toFixed(2)})`
+        document.getElementById('vintageScore').style.fontSize = ".6em"
+
+
+        document.getElementById('increment').onclick = () => {
+            mintAmount.textContent = Number(mintAmount.textContent) < 5 ?  Number(mintAmount.textContent) + 1 : 5
+            updatePrice(Number(mintAmount.textContent))
+        }
+        document.getElementById('decrement').onclick = () => {
+            mintAmount.textContent = Number(mintAmount.textContent) > 1 ? Number(mintAmount.textContent) - 1 : 1
+            updatePrice(Number(mintAmount.textContent))
+        }
+
+        document.getElementById("mint").onclick = mint
 
 
 
