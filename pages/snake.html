@@ -15,9 +15,8 @@
         <h1 class="title">Nolan Jannotta</h1>
 
         <nav>
-            <ul class="nav_bar">
-                <li><a href="/index.html">&#8656; home</a></li>
-            </ul>
+            <a href="/">&#8656; home</a>
+
         </nav>
     </header>
 
@@ -106,8 +105,9 @@
     const mintButtons = document.getElementById('mintButtons');
     const mintAmount = document.getElementById('mintAmount');
 
-    const snakeAddress = "0x8c822FA282722eDcA512A9E94C591d3F52196eF2"
-    const abi = [
+    const contract = {
+        address: "0x8c822FA282722eDcA512A9E94C591d3F52196eF2",
+        abi: [
             {
                 inputs: [
                     {
@@ -202,11 +202,105 @@
             }
 
         ]
-
-    const contract = {
-        address: snakeAddress,
-        abi
     }
+    
+
+    // const snakeAddress = "0x8c822FA282722eDcA512A9E94C591d3F52196eF2"
+    // const abi = [
+    //         {
+    //             inputs: [
+    //                 {
+    //                     internalType: "uint256",
+    //                     name: "amount",
+    //                     type: "uint256"
+    //                 },
+    //                 {
+    //                     internalType: "address",
+    //                     name: "user",
+    //                     type: "address"
+    //                 }],
+    //             name: "getFinalPrice", outputs:
+    //                 [
+    //                     {
+    //                         internalType: "uint256",
+    //                         name: "", type: "uint256"
+    //                     }],
+    //             stateMutability: "view",
+    //             type: "function"
+    //         },
+    //         {
+    //             inputs: [
+    //                 {
+    //                     "internalType": "uint256",
+    //                     "name": "id",
+    //                     "type": "uint256"
+    //                 }
+    //             ],
+    //             name: "tokenURI",
+    //             outputs: [
+    //                 {
+    //                     internalType: "string",
+    //                     name: "",
+    //                     type: "string"
+    //                 }
+    //             ],
+    //             stateMutability: "view",
+    //             type: "function"
+    //         },
+    //         {
+    //             inputs: [],
+    //             name: "totalSupply",
+    //             outputs: [
+    //                 {
+    //                     internalType: "uint256",
+    //                     name: "",
+    //                     type: "uint256"
+    //                 }
+    //             ],
+    //             stateMutability: "view",
+    //             type: "function"
+    //         },
+    //         {
+    //             inputs: [],
+    //             name: "maxSupply",
+    //             outputs: [
+    //                 {
+    //                     internalType: "uint256",
+    //                     name: "",
+    //                     type: "uint256"
+    //                 }
+    //             ],
+    //             stateMutability: "view",
+    //             type: "function"
+    //         },
+    //         {
+    //             inputs: [],
+    //             name: "price",
+    //             outputs: [
+    //                 {
+    //                     internalType: "uint256",
+    //                     name: "",
+    //                     type: "uint256"
+    //                 }
+    //             ],
+    //             stateMutability: "view",
+    //             type: "function"
+    //         },
+    //         {
+    //             inputs: [
+    //                 {
+    //                     internalType: "uint256[]",
+    //                     name: "schemeIds",
+    //                     type: "uint256[]"
+    //                 }
+    //             ],
+    //             name: "buySnake",
+    //             outputs: [],
+    //             stateMutability: "payable",
+    //             type: "function"
+    //         }
+
+    //     ]
 
     const config = createConfig({
         chains: [mainnet],
@@ -221,7 +315,7 @@
 
         const results = await readContract(config, {
 
-            address: snakeAddress,
+            address: contract.address,
             abi,
             functionName: 'getFinalPrice',
             args: [amount, account.address]
@@ -233,62 +327,7 @@
     }
 
 
-    // async function mint() {
-    //     const amount = Number(mintAmount.textContent)
-    //     if(amount < 1 || amount > 5) {
-    //         // handle error case
-    //         return
-
-    //     }
-
-    //     const inputArr = []
-        
-    //     for(let i = 0; i <amount; i++) {
-    //         inputArr.push(BigInt(Math.floor((Math.random() * 5)+1)))
-
-    //     }
-
-    //     const account = await getAccount(config)
-    //     const price = await readContract(config, {
-    //         address: snakeAddress,
-    //         abi,
-    //         functionName: 'getFinalPrice',
-    //         args: [amount, account.address]
-
-
-    //         })
-
-        
-    //     try {
-    //          const { request } = await simulateContract(config, {
-    //             address: snakeAddress,
-    //             abi,
-    //             functionName: 'buySnake',
-    //             args: [inputArr],
-    //             value: price,
-    //             })
-            
-    //             const result = await writeContract(config, request)
-    //             document.getElementById('mintMessage').innerHTML = `<p> <a href="https://etherscan.io/tx/${result}" target="_blank">transaction submitted!</a> refresh page for updates. </p>`
-
-                
-    //     } catch(e) {
-    //         document.getElementById('mintMessage').textContent = "error while simulating transaction. Please try again later."
-
-    //     }
-        
-
-    // }
-
-    // console.log(createInputArray(5))
-
-    // async function disconnectWallet() {
-    //     await disconnect(config)
-    //     accountElement.textContent = ""
-    //     connectButtons.style.display = "inline"
-    //     mintButtons.style.display = "none"
-    // }
-
+   
 
     async function connectWallet(connector, options = {}) {
         const result = await connect(config, {
@@ -386,7 +425,7 @@
 
             const account = await getAccount(config)
             const price = await readContract(config, {
-                address: snakeAddress,
+                address: contract.address,
                 abi,
                 functionName: 'getFinalPrice',
                 args: [amount, account.address]
@@ -397,7 +436,7 @@
 
             try {
                 const { request } = await simulateContract(config, {
-                    address: snakeAddress,
+                    address: contract.address,
                     abi,
                     functionName: 'buySnake',
                     args: [inputArr],
