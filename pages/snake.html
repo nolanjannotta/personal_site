@@ -205,103 +205,6 @@
     }
     
 
-    // const snakeAddress = "0x8c822FA282722eDcA512A9E94C591d3F52196eF2"
-    // const abi = [
-    //         {
-    //             inputs: [
-    //                 {
-    //                     internalType: "uint256",
-    //                     name: "amount",
-    //                     type: "uint256"
-    //                 },
-    //                 {
-    //                     internalType: "address",
-    //                     name: "user",
-    //                     type: "address"
-    //                 }],
-    //             name: "getFinalPrice", outputs:
-    //                 [
-    //                     {
-    //                         internalType: "uint256",
-    //                         name: "", type: "uint256"
-    //                     }],
-    //             stateMutability: "view",
-    //             type: "function"
-    //         },
-    //         {
-    //             inputs: [
-    //                 {
-    //                     "internalType": "uint256",
-    //                     "name": "id",
-    //                     "type": "uint256"
-    //                 }
-    //             ],
-    //             name: "tokenURI",
-    //             outputs: [
-    //                 {
-    //                     internalType: "string",
-    //                     name: "",
-    //                     type: "string"
-    //                 }
-    //             ],
-    //             stateMutability: "view",
-    //             type: "function"
-    //         },
-    //         {
-    //             inputs: [],
-    //             name: "totalSupply",
-    //             outputs: [
-    //                 {
-    //                     internalType: "uint256",
-    //                     name: "",
-    //                     type: "uint256"
-    //                 }
-    //             ],
-    //             stateMutability: "view",
-    //             type: "function"
-    //         },
-    //         {
-    //             inputs: [],
-    //             name: "maxSupply",
-    //             outputs: [
-    //                 {
-    //                     internalType: "uint256",
-    //                     name: "",
-    //                     type: "uint256"
-    //                 }
-    //             ],
-    //             stateMutability: "view",
-    //             type: "function"
-    //         },
-    //         {
-    //             inputs: [],
-    //             name: "price",
-    //             outputs: [
-    //                 {
-    //                     internalType: "uint256",
-    //                     name: "",
-    //                     type: "uint256"
-    //                 }
-    //             ],
-    //             stateMutability: "view",
-    //             type: "function"
-    //         },
-    //         {
-    //             inputs: [
-    //                 {
-    //                     internalType: "uint256[]",
-    //                     name: "schemeIds",
-    //                     type: "uint256[]"
-    //                 }
-    //             ],
-    //             name: "buySnake",
-    //             outputs: [],
-    //             stateMutability: "payable",
-    //             type: "function"
-    //         }
-
-    //     ]
-
     const config = createConfig({
         chains: [mainnet],
         transports: {
@@ -350,37 +253,6 @@
 
 
     window.onload = async function () {
-
-
-        const results = await readContracts(config, {
-            contracts: [
-                {
-                    ...contract,
-                    functionName: 'tokenURI',
-                    args: [1]
-                },
-                {
-                    ...contract,
-                    functionName: 'totalSupply',
-                },
-                {
-                    ...contract,
-                    functionName: 'maxSupply',
-                },
-                {
-                    ...contract,
-                    functionName: 'price',
-                }
-            ]
-        })
-
-
-
-        const response = await fetch(results[0].result)
-        const json = await response.json()
-
-        document.getElementById('supply').textContent = `supply: ${Number(results[1].result)}/${Number(results[2].result)} | price: ${formatEther(results[3].result)} eth`
-        document.getElementById('image').setAttribute('data', json.image)
 
         document.getElementById('metamask').onclick = () => connectWallet(injected)
         document.getElementById('coinbaseWallet').onclick = () => connectWallet(coinbaseWallet, {appName: 'snake',preference: "eoaOnly"})
@@ -453,6 +325,39 @@
             }
 
         }
+
+
+        const results = await readContracts(config, {
+            contracts: [
+                {
+                    ...contract,
+                    functionName: 'tokenURI',
+                    args: [1]
+                },
+                {
+                    ...contract,
+                    functionName: 'totalSupply',
+                },
+                {
+                    ...contract,
+                    functionName: 'maxSupply',
+                },
+                {
+                    ...contract,
+                    functionName: 'price',
+                }
+            ]
+        })
+
+
+
+        const response = await fetch(results[0].result)
+        const json = await response.json()
+
+        document.getElementById('supply').textContent = `supply: ${Number(results[1].result)}/${Number(results[2].result)} | price: ${formatEther(results[3].result)} eth`
+        document.getElementById('image').setAttribute('data', json.image)
+
+        
 
 
     };
