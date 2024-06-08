@@ -24,15 +24,9 @@
         <section class="about">
             <h1>&#9711; Snake</h1>
                 <ul class="list">
-                    <li>
-                        <p> <small id="deployedAt">&#9657; deployed: <a href="https://etherscan.io/tx/0x12e0cd7ae8cccd34ab201dfce8dde6092f478932c3383885594ad30ab6f68fbb" target="_blank">May-05-2022</a></small> <small id="vintageScore"></small></p>   
-                    </li>
-                    <li>
-                        <p> <small>&#9657; mainnet</small></p>
-                    </li>
-                    <li>
-                        <p> <small>&#9657; <a href="https://opensea.io/collection/sssnake" target="_blank">opensea &#8599;</a></small></p>
-                    </li>
+                    <li id="deployedAt">&nbsp;deployed: <a href="https://etherscan.io/tx/0x12e0cd7ae8cccd34ab201dfce8dde6092f478932c3383885594ad30ab6f68fbb" target="_blank">May-05-2022</a> <small id="vintageScore"></small></li>
+                    <li>&nbsp;mainnet</li>
+                    <li>&nbsp;<a href="https://opensea.io/collection/sssnake" target="_blank">opensea &#8599;</a></li>
                 </ul>
                 
             <span class="corners">
@@ -97,13 +91,15 @@
 <script type="module">
     import { createPublicClient, http, getContract, formatEther,parseEther  } from 'https://esm.sh/viem'
     import { mainnet } from 'https://esm.sh/viem/chains'
-    import { createConfig, readContracts,readContract,  connect, disconnect, getAccount,simulateContract, writeContract,getBalance,waitForTransactionReceipt,switchChain} from 'https://esm.sh/@wagmi/core@2.x'
+    import { createConfig,fallback, readContracts,readContract,  connect, disconnect, getAccount,simulateContract, writeContract,getBalance,waitForTransactionReceipt,switchChain} from 'https://esm.sh/@wagmi/core@2.x'
     import { injected, metaMask,coinbaseWallet  } from 'https://esm.sh/@wagmi/connectors'
 
     const accountElement = document.getElementById('account');
     const connectButtons = document.getElementById('connectButtons');
     const mintButtons = document.getElementById('mintButtons');
     const mintAmount = document.getElementById('mintAmount');
+
+
 
     const contract = {
         address: "0x8c822FA282722eDcA512A9E94C591d3F52196eF2",
@@ -208,7 +204,16 @@
     const config = createConfig({
         chains: [mainnet],
         transports: {
-            [mainnet.id]: http("https://rpc.flashbots.net")
+            [mainnet.id]: fallback([
+                http("https://rpc.flashbots.net"),
+                http("https://eth.llamarpc.com"),
+                http("https://eth-pokt.nodies.app"),
+                http("https://eth.drpc.org"),
+                http("https://rpc.mevblocker.io"),
+                http("https://ethereum-rpc.publicnode.com"),
+                http("https://1rpc.io/eth"),
+
+            ])
         }
 
     })
@@ -252,7 +257,7 @@
 
 
 
-    window.onload = async function () {
+    window.onload = async () =>  {
 
         document.getElementById('metamask').onclick = () => connectWallet(injected)
         document.getElementById('coinbaseWallet').onclick = () => connectWallet(coinbaseWallet, {appName: 'snake',preference: "eoaOnly"})

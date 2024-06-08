@@ -11,14 +11,17 @@ body {
     transform: skewY(2deg);
     line-height: 1.6;
     font-size: larger;
+    /* background-color:green; */
+    /* display: flex;
+    flex-direction: column; */
 
 
 }
 
 .inputButtons {
-display: inline-block;
-margin: 0;
-padding: 0;
+/* display: inline-block; */
+/* margin: 0; */
+/* padding: 0; */
 }
 
 .inputButtons:hover {
@@ -53,9 +56,10 @@ padding: 0;
 
 
 .list {
-    list-style: none;
-    /* "\27A2"; */
-
+    list-style: '\2AF8';
+}
+.sub-list {
+    list-style: '\29C8'
 }
 
 li {
@@ -97,7 +101,7 @@ a:hover, button:hover {
 
 .mintButtons {
     /* background-color: orange; */
-    display: flex;
+    /* display: flex; */
     /* flex-direction: column; */
     /* width: min-content */
 }
@@ -197,6 +201,8 @@ footer {
 }
 
 section {
+    width: max-content;
+    max-width: 90%;
     /* background-color: orange; */
 }
 
