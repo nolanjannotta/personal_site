@@ -92,7 +92,7 @@
     import { createPublicClient, http, getContract, formatEther,parseEther  } from 'https://esm.sh/viem'
     import { mainnet } from 'https://esm.sh/viem/chains'
     import { createConfig,fallback, readContracts,readContract,  connect, disconnect, getAccount,simulateContract, writeContract,getBalance,waitForTransactionReceipt,switchChain} from 'https://esm.sh/@wagmi/core@2.x'
-    import { injected, metaMask,coinbaseWallet  } from 'https://esm.sh/@wagmi/connectors'
+    import { injected, metaMask,coinbaseWallet,walletConnect   } from 'https://esm.sh/@wagmi/connectors'
 
     const accountElement = document.getElementById('account');
     const connectButtons = document.getElementById('connectButtons');
@@ -203,6 +203,12 @@
 
     const config = createConfig({
         chains: [mainnet],
+        // connectors: [
+        //     injected(),
+        //     metaMask(),
+        //     coinbaseWallet({appName: 'snake',preference: "eoaOnly"}),
+        //     walletConnect({projectId:"40f8820c0fe0e5a60af6463ae07ea9c2"})
+        // ],
         transports: {
             [mainnet.id]: fallback([
                 http("https://rpc.flashbots.net"),
@@ -218,6 +224,8 @@
 
     })
 
+    console.log(config)
+
     async function updatePrice(amount) {
         const account = await getAccount(config)
 
@@ -232,6 +240,7 @@
         })
 
         document.getElementById('price').textContent = `\u27E6price: ${formatEther(results)} eth\u27E7`
+
     }
 
 
@@ -259,7 +268,7 @@
 
     window.onload = async () =>  {
 
-        document.getElementById('metamask').onclick = () => connectWallet(injected)
+        document.getElementById('metamask').onclick = () => connectWallet(walletConnect, {projectId:"40f8820c0fe0e5a60af6463ae07ea9c2"})
         document.getElementById('coinbaseWallet').onclick = () => connectWallet(coinbaseWallet, {appName: 'snake',preference: "eoaOnly"})
         document.getElementById('disconnect').onclick = async () => {
             await disconnect(config)
