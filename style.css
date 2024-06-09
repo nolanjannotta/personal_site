@@ -1,5 +1,5 @@
 @font-face {
-    font-family: Source Code Pro;
+    font-family: "Source Code Pro";
     src: local("./SourceCodePro-VariableFont_wght.ttf");
 }
 
@@ -7,13 +7,10 @@
 body {
     font-family: 'Source Code Pro', monospace;
     box-sizing: border-box;
-    padding: 40px 50px;
+    padding: 2% 2%;
     transform: skewY(2deg);
     line-height: 1.6;
     font-size: larger;
-    /* background-color:green; */
-    /* display: flex;
-    flex-direction: column; */
 
 
 }
@@ -47,9 +44,6 @@ body {
     list-style: '\29C8'
 }
 
-/* li {
-    margin: 5px;
-} */
 
 .title {
     width: max-content;
@@ -73,6 +67,7 @@ body {
 button {
     all: unset;
 }
+
 a:hover, button:hover, .inputButtons:hover {
     text-decoration: underline;
     text-decoration-style: wavy;
@@ -107,56 +102,10 @@ footer {
 
 
 
-@keyframes flying {
-    0% {
-        left: 0;
-        top: 40%;
-        color: black;
-        /* display: inline  */
-    }
-
-    50% {
-        left: 100%;
-        top: 70%;
-        color: black;
-
-    }
-
-    100% {
-        left: 0;
-        top: 40%;
-        color: black;
-    }
-}
-
-
-
-.flying {
-    animation: flying 150s infinite;
-    animation-direction: normal;
-    animation-delay: 5s;
-    position: absolute;
-    left: 0;
-    color: white;
-    /* color: white; */
-
-}
-
 
 
 @media (max-width: 900px) {
 
-
-
-    .flying {
-        animation: flying 30s infinite;
-        animation-direction: normal;
-        animation-delay: 20s;
-        position: absolute;
-        left: 0;
-        color: white;
-
-    }
     object {
         width: 100%;
     
@@ -184,9 +133,6 @@ section {
     body {
         font-size: x-small;
     }
-    /* .sub-list {
-        padding: 0;
-    } */
 
     section {
         word-wrap: nowrap;
