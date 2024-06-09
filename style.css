@@ -21,7 +21,7 @@ body {
     list-style: '\2AF8';
 }
 .sub-list {
-    list-style: '\29C8'
+    list-style-type: '\29C8';
 }
 
 
