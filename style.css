@@ -24,15 +24,6 @@ body {
 /* padding: 0; */
 }
 
-.inputButtons:hover {
-    /* text-decoration: underline; */
-    /* text-decoration-style: wavy; */
-    text-decoration-thickness: .5px;
-    /* text-shadow: -2px -3px 1px rgb(172, 172, 172); */
-    transform: translate(2px,2px);
-    cursor: pointer;
-}
-
 
 
 @keyframes shadow {
@@ -81,15 +72,14 @@ li {
 
   .title:hover {
         transition-duration: 2s;
-
-    transform: rotatex(-360deg);
+        transform: rotatex(-360deg);
   }
 
 
 button {
     all: unset;
 }
-a:hover, button:hover {
+a:hover, button:hover, .inputButtons:hover {
     text-decoration: underline;
     text-decoration-style: wavy;
     text-decoration-thickness: .5px;
@@ -114,22 +104,13 @@ a {
     display: inline-block;
 }
 
-/* a:hover {
-    text-decoration: underline;
-    text-decoration-style: wavy;
-    text-decoration-thickness: .5px;
-    transform: translate(2px,2px);
-} */
+
 
 footer {
     opacity: 0.3;
 }
 
-.about {
-    width: max-content;
-    max-width: 90%;
 
-}
 
 .corners {
     min-width: 100%;
@@ -178,11 +159,7 @@ footer {
 
 @media (max-width: 900px) {
 
-    .about {
 
-        max-width: 90%;
-
-    }
 
     .flying {
         animation: flying 30s infinite;
@@ -206,10 +183,6 @@ section {
     /* background-color: orange; */
 }
 
-/* section > h1:hover {
-    transform: rotatex(-360deg);
-} */
-
 
 
 @media (max-width: 439px) {
@@ -226,6 +199,12 @@ section {
     }
     .list {
         margin: 0;
+    }
+
+    section {
+        word-wrap: nowrap;
+        width: max-content;
+        max-width: 100%;
     }
 
 
