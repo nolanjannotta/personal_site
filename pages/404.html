@@ -22,7 +22,8 @@
     <main>
         <section class="about">
             <h1>&#9711; 404</h1>
-                  <p>hmmm 🤔 nothing to see here.... move along</p>  
+                  <p>hmmm 🤔 nothing to see here...</p> 
+                  <p>returning home in: <span id="counter">5</span></p> 
 
 
     </main>
@@ -31,5 +32,20 @@
         <p><small>made with ☠ by nolan</small></p>
     </footer>
 </body>
+
+
+<script>
+    let seconds = 4
+    let timer = setInterval(() => {
+        document.getElementById('counter').textContent = seconds
+        seconds--
+
+        if(seconds === -1) {
+            clearInterval(timer);
+
+            window.location.href = '/'
+        }
+    }, 1000)
+</script>
 
 </html>

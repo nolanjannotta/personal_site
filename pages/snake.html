@@ -39,7 +39,7 @@
                 and javascript code are stored in the smart contract. Once the SVG is returned from the contract, 
                 your browser handles the rest and runs the game. </p>
             <p>tip: owners of <a href="/pages/calculator.html">calculators</a> get an automatic 20% discount. </p>
-            <p>&#10036;<b> known bug:</b> food is able to spawn underneath the snake. &#10036;</p>
+            <p>&#10036;<b> known bug:</b> food <b><i><u>can</u></i></b> spawn underneath the snake. &#10036;</p>
             <span class="corners">
                 <span>&#8990;</span>
                 <span>&#8991;</span>
@@ -57,9 +57,10 @@
         <span id="connectButtons">
            <button id="metamask">metamask</button> |
             <button id="coinbaseWallet">coinbase wallet</button>
-            <p><small><small><b>*currently only coinbase wallet works on mobile.*</b></small></small>
-                <br/>
-                <small>for best results, use a desktop web browser.</small>
+            <p>
+                <small><small>
+                    <b>&#10036; currently only coinbase EOA wallet works on mobile. For best results, use a desktop web browser. &#10036;</b>
+                </small></small>
             </p>
             
         </span>
@@ -104,7 +105,7 @@
     const mintButtons = document.getElementById('mintButtons');
     const mintAmount = document.getElementById('mintAmount');
 
-
+    console.log(document.location.origin)
 
     const contract = {
         address: "0x8c822FA282722eDcA512A9E94C591d3F52196eF2",
