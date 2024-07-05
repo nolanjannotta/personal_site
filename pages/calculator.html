@@ -5,7 +5,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta property="og:title" content="nj" />
-    <title>nj</title>
+    <title>calculator</title>
     <link rel="icon" href='data:image/svg+xml;base64,PHN2ZyBpZD0ic3ZnIiB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPScxMjAnIGhlaWdodD0nMTIwJz4gPHRleHQgdGV4dC1hbmNob3I9Im1pZGRsZSIgZG9taW5hbnQtYmFzZWxpbmU9Im1pZGRsZSIgeD0iNjAiIHk9IjYwIiBzdHlsZT0iZm9udC1zaXplOiAxMjBweDsiIGZpbGw9IiNmOGY0ZTkiPiAmIzQ2MDsgPC90ZXh0PiA8L3N2Zz4=' type="image/svg+xml">
     <link href="../style.css" rel="stylesheet" />
   </head>
@@ -25,8 +25,8 @@
             <h1>&#9711; Calculator</h1>
                 <ul class="list">
                     <li id="deployedAt"> &nbsp;deployed: <a href="https://etherscan.io/tx/0x6e7df2403c18ddd08f0ec4a6f1cdab2ecc41b4218d3824f5bb80a4d09bc80a46" target="_blank">Mar-30-2022</a> <small id="vintageScore"></small></li>
-                    <li>&nbsp;mainnet
-                    </li>
+                    <!-- <li>&nbsp;mainnet</li> -->
+                    <li>&nbsp;<a href="https://etherscan.io/address/0xc3b88a12d8cda6b9802c30be4bb18bdd1828b317" target="_blank">etherscan &#8599;</a></li>
                     <li>&nbsp;<a href="https://opensea.io/collection/calculator-v4" target="_blank">opensea &#8599;</a></li>
                 </ul> 
                 
@@ -40,7 +40,8 @@
                 and javascript code are stored in the smart contract. Once the SVG is returned from the contract, 
                 your browser handles the rest and runs the logic. 9/10 collectors recommend minting this token.</p>
             <p>"wow, really cool. Arguably the first nft to solve real world [math] problems" -nolan</p>
-            <p><b> &#10036; something here &#10036; </b></p>
+            <p><b> &#10036; minting through this site will randomly choose colors for you. The original (likely broken) frontend lives <a>here &#8599;</a>. Fixing it is on the todo list. &#10036; </b></p>
+            
             <span class="corners">
                 <span>&#8990;</span>
                 <span>&#8991;</span>
@@ -49,27 +50,39 @@
         </section>
 
         <section id="portfolio">
+            <p>demo &#8595;</p>
             <br/>
             <object width="500" id="image"></object>
             <p id="supply">loading...</p>
         </section>
         
-        <section style="background-color: aqua; display: flex; flex-direction: column; align-items: start;">
+        <section>
 
+            <div id="whenDisconnected">
                 <span id="connectButtons">
                     <button id="metamask">metamask</button> |
                     <button id="coinbaseWallet">coinbase wallet</button>
                 </span>
+            </div>
+                
+                
 
-                <span id="accountDetails"> 
-                    <!-- <br/> -->
+            <div style="display:none" id="whenConnected">
+                <span > 
                     <small id="account"></small>
-                    <button id="disconnect"><small>disconnect</small></button>
-                    <button id="switchChains"><small>switch chains</small></button>
-                    <p><small id="balance">balance:</small></p>
+                    <button id="disconnect"><small>&#10214;disconnect&#10215;</small></button>
+                    <button id="switchChains"><small></small></button>
                 </span>
 
+                <br/>
+                <span>
+                    <small id="balance">balance:</small>
+                </span>
+                <br/>
+                <br/>
 
+                mint:
+                <br/>
                 <span id="mintButtons">
                     <span id="decrement" class="inputButtons"><small></small>&#10647;-&#10648;</span>
                     <span id="mintAmount">1</span>
@@ -80,6 +93,8 @@
                     <p id="mintMessage"><small></small></p>
                     
                 </span>
+            </div>
+
         </section>
     </main>
 
@@ -91,14 +106,17 @@
 <script type="module">
     import { createPublicClient, http, getContract, formatEther,parseEther,BaseError, ContractFunctionRevertedError   } from 'https://esm.sh/viem'
     import { mainnet } from 'https://esm.sh/viem/chains'
-    import { createConfig,fallback, readContracts,readContract,  connect, disconnect, getAccount,simulateContract, writeContract,getBalance,waitForTransactionReceipt, switchChain} from 'https://esm.sh/@wagmi/core@2.x'
-    import { injected, metaMask,coinbaseWallet  } from 'https://esm.sh/@wagmi/connectors'
+    import { createConfig,fallback, readContracts,readContract,  connect, disconnect, getAccount,simulateContract, writeContract,getBalance,waitForTransactionReceipt, switchChain,watchAccount  } from 'https://esm.sh/@wagmi/core@2.x'
+    import { injected, metaMask,coinbaseWallet} from 'https://esm.sh/@wagmi/connectors'
 
     const accountElement = document.getElementById('account');
-    const connectButtons = document.getElementById('connectButtons');
-    const mintButtons = document.getElementById('mintButtons');
     const mintAmount = document.getElementById('mintAmount');
-    const accountDetails = document.getElementById('accountDetails');
+    const whenConnected = document.getElementById('whenConnected');
+    const whenDisconnected = document.getElementById('whenDisconnected');
+
+
+
+
 
     let calculatorPrice;
 
@@ -186,9 +204,26 @@
 
     })
 
+    const unwatchAccount = watchAccount(config, {
+        onChange: async (account) => {     
+            console.log(account)        
+            if(account.addresses.length > 1) {
+                whenConnected.style.display = "inline"
+                whenDisconnected.style.display = "none"
+
+                const balance = await getBalance(config, {address: account.addresses[0]})
+                document.getElementById('balance').textContent = `balance: ${balance.formatted} eth`
+
+                accountElement.textContent = `connected as: \u27E6${account.addresses[0]}\u27E7 \u25CB `        
+                document.getElementById('price').textContent = `\u27E6price: ${formatEther(calculatorPrice)} eth\u27E7`
+            }
 
 
-    
+
+
+        
+        },
+    })
 
 
     // async function updatePrice(amount) {
@@ -214,42 +249,42 @@
         if(result.accounts.length === 0) {
             return
         }
-        console.log(result.chainId)
+
         if(result.chainId !== 1) {
             document.getElementById('switchChains').onclick = async () => {
                 await switchChain(config, {chainId: 1})
+                document.getElementById('switchChains').innerHTML = "";
+
             }
-            document.getElementById('switchChains').innerHTML = "<small> \u27E6switch chains\u27E7</small>"
+            
+            document.getElementById('switchChains').innerHTML = " <small> \u27E6switch chains\u27E7</small>"
             
         }
-        // document.getElementById('switchChains').style.display = "none"
-        accountDetails.style.display = "inline"
+        whenConnected.style.display = "inline"
+        whenDisconnected.style.display = "none"
+
         const balance = await getBalance(config, {address: result.accounts[0]})
         document.getElementById('balance').textContent = `balance: ${balance.formatted} eth`
-        accountElement.textContent = `connected as: ${result.accounts[0]}`
-        connectButtons.style.display = "none"
-        mintButtons.style.display = "inline"
-        document.getElementById('price').textContent = `\u27E6price: ${formatEther(calculatorPrice)} eth\u27E7`
 
-        
+        accountElement.textContent = `connected as: \u27E6${result.accounts[0]}\u27E7 \u25CB `        
+        document.getElementById('price').textContent = `\u27E6price: ${formatEther(calculatorPrice)} eth\u27E7`
 
     }
 
 
+    console.log(config)
 
     window.onload = async () =>  {
-
-        document.getElementById('metamask').onclick = () => connectWallet(injected)
-        document.getElementById('coinbaseWallet').onclick = () => connectWallet(coinbaseWallet, {appName: 'snake',preference: "eoaOnly"})
+        // unwatchAccount();
+        document.getElementById('metamask').onclick = async () => await connectWallet(injected)
+        document.getElementById('coinbaseWallet').onclick = async () => await connectWallet(coinbaseWallet, {appName: 'snake',preference: "eoaOnly"})
         document.getElementById('disconnect').onclick = async () => {
-            await disconnect(config)
-            accountElement.textContent = ""
-            connectButtons.style.display = "inline"
-            mintButtons.style.display = "none"
+
+            await disconnect(config, {connector: config.connectors[0]})
+            unwatchAccount();
+            whenConnected.style.display = "none"
+            whenDisconnected.style.display = "inline"
         }
-        
-        mintButtons.style.display = "none"
-        accountDetails.style.display = "none"
 
         const punksAge = Date.now()/1000 -  1496967770;
         const calculatorAge = Date.now()/1000 -  1648612862;
@@ -307,11 +342,7 @@
 
         const results = await readContracts(config, {
             contracts: [
-                {
-                    ...contract,
-                    functionName: 'tokenURI',
-                    args: [1]
-                },
+
                 {
                     ...contract,
                     functionName: 'totalSupply',
@@ -326,13 +357,25 @@
                 }
             ]
         })
+         
 
-        calculatorPrice = results[3].result
+        const randomId = Math.floor(Number(results[0].result) * Math.random() + 1)
 
-        const response = await fetch(results[0].result)
+        const demo = await readContract(config, {
+            ...contract,
+            functionName: 'tokenURI',
+            args: [randomId]
+        })
+
+
+        calculatorPrice = results[2].result
+        document.getElementById("price").textContent = `\u27E6price: ${formatEther(calculatorPrice * BigInt(mintAmount.textContent))} eth\u27E7`
+
+
+        const response = await fetch(demo)
         const json = await response.json()
 
-        document.getElementById('supply').textContent = `supply: ${Number(results[1].result)}/${Number(results[2].result)} | price: ${formatEther(results[3].result)} eth`
+        document.getElementById('supply').textContent = `supply: ${Number(results[0].result)}/${Number(results[1].result)} | price: ${formatEther(results[2].result)} eth`
         document.getElementById('image').setAttribute('data', json.image)
 
         

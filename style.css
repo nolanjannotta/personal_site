@@ -11,8 +11,13 @@ body {
     transform: skewY(2deg);
     line-height: 1.6;
     font-size: larger;
+    /* background-color: aqua; */
 
 
+}
+
+.background {
+    position: absolute;
 }
 
 section h1 {
