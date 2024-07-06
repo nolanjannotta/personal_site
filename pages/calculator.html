@@ -22,7 +22,7 @@
 
     <main>
         <section class="about">
-            <h1>&#9711; Calculator</h1>
+            <h1>&#8858; Calculator</h1>
                 <ul class="list">
                     <li id="deployedAt"> &nbsp;deployed: <a href="https://etherscan.io/tx/0x6e7df2403c18ddd08f0ec4a6f1cdab2ecc41b4218d3824f5bb80a4d09bc80a46" target="_blank">Mar-30-2022</a> <small id="vintageScore"></small></li>
                     <!-- <li>&nbsp;mainnet</li> -->
@@ -40,7 +40,9 @@
                 and javascript code are stored in the smart contract. Once the SVG is returned from the contract, 
                 your browser handles the rest and runs the logic. 9/10 collectors recommend minting this token.</p>
             <p>"wow, really cool. Arguably the first nft to solve real world [math] problems" -nolan</p>
-            <p><b> &#10036; minting through this site will randomly choose colors for you. The original (likely broken) frontend lives <a>here &#8599;</a>. Fixing it is on the todo list. &#10036; </b></p>
+            <p>minting through this site will randomly choose colors for you. The original (likely broken) frontend lives <a>here &#8599;</a>. Fixing it is on the todo list.</p>
+
+            <!-- <p><b> &#10036;note:&#10036;</b></p> -->
             
             <span class="corners">
                 <span>&#8990;</span>
@@ -71,7 +73,7 @@
                 <span > 
                     <small id="account"></small>
                     <button id="disconnect"><small>&#10214;disconnect&#10215;</small></button>
-                    <button id="switchChains"><small></small></button>
+                    <button id="switchChains"><small>&#10214;switch chains&#10215;</small></button>
                 </span>
 
                 <br/>
@@ -89,10 +91,9 @@
                     <span id="increment" class="inputButtons">&#10647;+&#10648;</span>
                     &nbsp;&nbsp;
                     <span id="price"> &#10214;price:&#10215;</span> &nbsp;&nbsp;
-                    <button id="mint">&#10214;mint&#10215;</button>
-                    <p id="mintMessage"><small></small></p>
-                    
+                    <button id="mint">&#10214;mint&#10215;</button>             
                 </span>
+                <small><p id="mintMessage"></p></small>
             </div>
 
         </section>
@@ -205,25 +206,32 @@
     })
 
     const unwatchAccount = watchAccount(config, {
-        onChange: async (account) => {     
-            console.log(account)        
-            if(account.addresses.length > 1) {
-                whenConnected.style.display = "inline"
-                whenDisconnected.style.display = "none"
+            onChange: async (account) => {
+                console.log(account)
+                if (account.chainId === 1) {
+                    document.getElementById('switchChains').style.display = "none"
+                    document.getElementById('mint').disabled = false
+                    document.getElementById('mint').style.textDecoration = "none"
+                    document.getElementById('mintMessage').textContent = ""
+                }
+                else {
+                    document.getElementById('switchChains').style.display = "inline"
+                    document.getElementById('mint').disabled = true
+                    document.getElementById('mint').style.textDecoration = "line-through"
+                    document.getElementById('mintMessage').textContent = "please switch to mainnet to mint"
 
-                const balance = await getBalance(config, {address: account.addresses[0]})
-                document.getElementById('balance').textContent = `balance: ${balance.formatted} eth`
+                }
 
-                accountElement.textContent = `connected as: \u27E6${account.addresses[0]}\u27E7 \u25CB `        
-                document.getElementById('price').textContent = `\u27E6price: ${formatEther(calculatorPrice)} eth\u27E7`
-            }
-
-
-
-
-        
-        },
-    })
+                if (account.isConnected) {
+                    whenConnected.style.display = "inline"
+                    whenDisconnected.style.display = "none"
+                    const balance = await getBalance(config, { address: account.addresses[0] })
+                    document.getElementById('balance').textContent = `balance: ${balance.formatted} eth`
+                    accountElement.textContent = `connected as: \u27E6${account.addresses[0]}\u27E7 \u25CB `
+                    document.getElementById('price').textContent = `\u27E6price: ${formatEther(calculatorPrice)} eth\u27E7`
+                }
+            },
+        })
 
 
     // async function updatePrice(amount) {
@@ -250,16 +258,6 @@
             return
         }
 
-        if(result.chainId !== 1) {
-            document.getElementById('switchChains').onclick = async () => {
-                await switchChain(config, {chainId: 1})
-                document.getElementById('switchChains').innerHTML = "";
-
-            }
-            
-            document.getElementById('switchChains').innerHTML = " <small> \u27E6switch chains\u27E7</small>"
-            
-        }
         whenConnected.style.display = "inline"
         whenDisconnected.style.display = "none"
 
@@ -272,7 +270,6 @@
     }
 
 
-    console.log(config)
 
     window.onload = async () =>  {
         // unwatchAccount();
@@ -281,9 +278,15 @@
         document.getElementById('disconnect').onclick = async () => {
 
             await disconnect(config, {connector: config.connectors[0]})
-            unwatchAccount();
+            // unwatchAccount();
             whenConnected.style.display = "none"
             whenDisconnected.style.display = "inline"
+        }
+
+        document.getElementById('switchChains').onclick = async () => {
+            await switchChain(config, { chainId: 1 })
+            document.getElementById('switchChains').innerHTML = "";
+
         }
 
         const punksAge = Date.now()/1000 -  1496967770;
@@ -375,7 +378,7 @@
         const response = await fetch(demo)
         const json = await response.json()
 
-        document.getElementById('supply').textContent = `supply: ${Number(results[0].result)}/${Number(results[1].result)} | price: ${formatEther(results[2].result)} eth`
+        document.getElementById('supply').textContent = `supply: ${Number(results[0].result)}/${Number(results[1].result)} | price: ${formatEther(calculatorPrice)} eth`
         document.getElementById('image').setAttribute('data', json.image)
 
         

@@ -5,7 +5,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta property="og:title" content="nj" />
-    <title>nj</title>
+    <title>snake</title>
     <link rel="icon" href='data:image/svg+xml;base64,PHN2ZyBpZD0ic3ZnIiB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPScxMjAnIGhlaWdodD0nMTIwJz4gPHRleHQgdGV4dC1hbmNob3I9Im1pZGRsZSIgZG9taW5hbnQtYmFzZWxpbmU9Im1pZGRsZSIgeD0iNjAiIHk9IjYwIiBzdHlsZT0iZm9udC1zaXplOiAxMjBweDsiIGZpbGw9IiNmOGY0ZTkiPiAmIzQ2MDsgPC90ZXh0PiA8L3N2Zz4=' type="image/svg+xml">
     <link href="../style.css" rel="stylesheet" />
   </head>
@@ -22,7 +22,7 @@
 
     <main>
         <section class="about">
-            <h1>&#9711; Snake</h1>
+            <h1>&#8858; Snake</h1>
                 <ul class="list">
                     <li id="deployedAt">&nbsp;deployed: <a href="https://etherscan.io/tx/0x12e0cd7ae8cccd34ab201dfce8dde6092f478932c3383885594ad30ab6f68fbb" target="_blank">May-05-2022</a> <small id="vintageScore"></small></li>
                     <!-- <li>&nbsp;mainnet</li> -->
@@ -35,13 +35,15 @@
                 <span>&#8989;</span>
               </span>
             
-            <p>a fully onchain game of snake. Fully functioning SVG stored onchain. comes in 5 colors schemes. 
+            <p>A game of snake on Ethereum mainnet. Fully functioning SVG stored onchain. comes in 5 colors schemes. 
                 "Onchain" in this case means that the SVG code 
                 and javascript code are stored in the smart contract. Once the SVG is returned from the contract, 
                 your browser handles the rest and runs the game. </p>
-            <p>tip: owners of <a href="/pages/calculator.html">calculators</a> get an automatic 20% discount. </p>
+            <p><b>&#10036; tip:</b> owners of <a href="/pages/calculator.html">calculators</a> get an automatic 20% discount. </p>
+            <p>minting through this site will randomly choose colors for you. The original (likely broken) frontend lives <a>here &#8599;</a>. Fixing it is on the todo list.</p>
+
             <p>&#10036;<b> known bug:</b> food <b><i><u>can</u></i></b> spawn underneath the snake. &#10036;</p>
-            <p>demo &#8595;</p>
+            
             <span class="corners">
                 <span>&#8990;</span>
                 <span>&#8991;</span>
@@ -49,45 +51,51 @@
 
         </section>
 
-        <section id="portfolio">
+        <section id="demo">
+            <p>demo &#8595;</p>
             <br/>
             <object width="500" id="image"></object>
             <p id="supply">loading...</p>
         </section>
         
-        <section id="contact">
-        <span id="connectButtons">
-           <button id="metamask">metamask</button> |
-            <button id="coinbaseWallet">coinbase wallet</button>
-            <p>
-                <small><small>
-                    <b>&#10036; currently only coinbase EOA wallet works on mobile. For best results, use a desktop web browser. &#10036;</b>
-                </small></small>
-            </p>
-            
-        </span>
-        
+        <section>
 
-        <span class="mintButtons" id="mintButtons">
-            <p > <small id="account"></small> <small><button id="disconnect">disconnect</button>  
-            </small></p>
-            <p > <small id="balance"></small></p>
-
-                <span class="controls">
-                    <p id="decrement" class="inputButtons">&#12308;-&#12309;</p>
-                    <span id="mintAmount">1</span>
-                    <p id="increment" class="inputButtons">&#12308;+&#12309;</p>
-                
+            <div id="whenDisconnected">
+                <span id="connectButtons">
+                    <button id="metamask">metamask</button> |
+                    <button id="coinbaseWallet">coinbase wallet</button>
                 </span>
-                <span id="price"> &#10214;price:&#10215;</span> &nbsp;&nbsp;
-            <span>
-                <button id="mint">&#10214;mint&#10215;</button>
-            </span>
-            <span>
-                <p id="mintMessage"></p>
-            </span>
-            
-        </span>
+            </div>
+                
+                
+
+            <div style="display:none" id="whenConnected">
+                <span > 
+                    <small id="account"></small>
+                    <button id="disconnect"><small>&#10214;disconnect&#10215;</small></button>
+                    <button id="switchChains"><small>&#10214;switch chains&#10215;</small></button>
+                </span>
+
+                <br/>
+                <span>
+                    <small id="balance">balance:</small>
+                </span>
+                <br/>
+                <br/>
+
+                mint:
+                <br/>
+                <span id="mintButtons">
+                    <span id="decrement" class="inputButtons"><small></small>&#10647;-&#10648;</span>
+                    <span id="mintAmount">1</span>
+                    <span id="increment" class="inputButtons">&#10647;+&#10648;</span>
+                    &nbsp;&nbsp;
+                    <span id="price"> &#10214;price:&#10215;</span> &nbsp;&nbsp;
+                    <button id="mint">&#10214;mint&#10215;</button>             
+                </span>
+                <small><p id="mintMessage"></p></small>
+            </div>
+
         </section>
     </main>
 
@@ -99,15 +107,16 @@
 <script type="module">
     import { createPublicClient, http, getContract, formatEther,parseEther  } from 'https://esm.sh/viem'
     import { mainnet } from 'https://esm.sh/viem/chains'
-    import { createConfig,fallback, readContracts,readContract,  connect, disconnect, getAccount,simulateContract, writeContract,getBalance,waitForTransactionReceipt,switchChain} from 'https://esm.sh/@wagmi/core@2.x'
+    import { createConfig,fallback, readContracts,readContract,  connect, disconnect, getAccount,simulateContract, writeContract,getBalance,waitForTransactionReceipt,switchChain,watchAccount} from 'https://esm.sh/@wagmi/core@2.x'
     import { injected, metaMask,coinbaseWallet  } from 'https://esm.sh/@wagmi/connectors'
 
     const accountElement = document.getElementById('account');
-    const connectButtons = document.getElementById('connectButtons');
-    const mintButtons = document.getElementById('mintButtons');
     const mintAmount = document.getElementById('mintAmount');
+    const whenConnected = document.getElementById('whenConnected');
+    const whenDisconnected = document.getElementById('whenDisconnected');
 
-    console.log(document.location.origin)
+
+    let snakePrice;
 
     const contract = {
         address: "0x8c822FA282722eDcA512A9E94C591d3F52196eF2",
@@ -226,13 +235,42 @@
 
     })
 
+    const unwatchAccount = watchAccount(config, {
+            onChange: async (account) => {
+                // console.log(account)
+                if (account.chainId === 1) {
+                    document.getElementById('switchChains').style.display = "none"
+                    document.getElementById('mint').disabled = false
+                    document.getElementById('mint').style.textDecoration = "none"
+                    document.getElementById('mintMessage').textContent = ""
+                }
+                else {
+                    document.getElementById('switchChains').style.display = "inline"
+                    document.getElementById('mint').disabled = true
+                    document.getElementById('mint').style.textDecoration = "line-through"
+                    document.getElementById('mintMessage').textContent = "please switch to mainnet to mint"
+
+                }
+
+                if (account.isConnected) {
+                    whenConnected.style.display = "inline"
+                    whenDisconnected.style.display = "none"
+                    const balance = await getBalance(config, { address: account.addresses[0] })
+                    document.getElementById('balance').textContent = `balance: ${balance.formatted} eth`
+                    accountElement.textContent = `connected as: \u27E6${account.addresses[0]}\u27E7 \u25CB `
+                    const total = await updatePrice(Number(mintAmount.textContent))
+                    // document.getElementById('price').textContent = `\u27E6price: ${formatEther(total)} eth\u27E7`
+                }
+            },
+        })
+
+
     async function updatePrice(amount) {
         const account = await getAccount(config)
 
         const results = await readContract(config, {
 
-            address: contract.address,
-            abi,
+            ...contract,
             functionName: 'getFinalPrice',
             args: [amount, account.address]
         
@@ -253,45 +291,51 @@
         if(result.accounts.length === 0) {
             return
         }
+
+        whenConnected.style.display = "inline"
+        whenDisconnected.style.display = "none"
+
         const balance = await getBalance(config, {address: result.accounts[0]})
         document.getElementById('balance').textContent = `balance: ${balance.formatted} eth`
-        accountElement.textContent = `connected as: ${result.accounts[0]}`
-        connectButtons.style.display = "none"
-        mintButtons.style.display = "inline"
-        updatePrice(1)
 
-
-
+        accountElement.textContent = `connected as: \u27E6${result.accounts[0]}\u27E7 \u25CB `   
+        // const total = await updatePrice(1)     
+        // document.getElementById('price').textContent = `\u27E6price: ${formatEther(total)} eth\u27E7`
+        await updatePrice(1)
     }
 
 
 
     window.onload = async () =>  {
 
-        document.getElementById('metamask').onclick = () => connectWallet(injected)
-        document.getElementById('coinbaseWallet').onclick = () => connectWallet(coinbaseWallet, {appName: 'snake',preference: "eoaOnly"})
+        document.getElementById('metamask').onclick = async () => await connectWallet(injected)
+        document.getElementById('coinbaseWallet').onclick = async () => await connectWallet(coinbaseWallet, {appName: 'snake',preference: "eoaOnly"})
         document.getElementById('disconnect').onclick = async () => {
-            await disconnect(config)
-            accountElement.textContent = ""
-            connectButtons.style.display = "inline"
-            mintButtons.style.display = "none"
-        }
-        
-        mintButtons.style.display = "none"
 
+            await disconnect(config, {connector: config.connectors[0]})
+            // unwatchAccount();
+            whenConnected.style.display = "none"
+            whenDisconnected.style.display = "inline"
+        }
+
+        document.getElementById('switchChains').onclick = async () => {
+            await switchChain(config, { chainId: 1 })
+            document.getElementById('switchChains').innerHTML = "";
+
+        }
         const punksAge = Date.now()/1000 -  1496967770;
         const snakeAge = Date.now()/1000 -  1651739467;
         document.getElementById('vintageScore').textContent = `(vintage rating: ${(snakeAge/punksAge * 10).toFixed(2)})`
         document.getElementById('vintageScore').style.fontSize = ".6em"
 
 
-        document.getElementById('increment').onclick = () => {
+        document.getElementById('increment').onclick = async () => {
             mintAmount.textContent = Number(mintAmount.textContent) < 5 ?  Number(mintAmount.textContent) + 1 : 5
-            updatePrice(Number(mintAmount.textContent))
+            await updatePrice(Number(mintAmount.textContent))
         }
-        document.getElementById('decrement').onclick = () => {
+        document.getElementById('decrement').onclick = async () => {
             mintAmount.textContent = Number(mintAmount.textContent) > 1 ? Number(mintAmount.textContent) - 1 : 1
-            updatePrice(Number(mintAmount.textContent))
+            await updatePrice(Number(mintAmount.textContent))
         }
 
         document.getElementById("mint").onclick = async () => {
@@ -311,8 +355,7 @@
 
             const account = await getAccount(config)
             const price = await readContract(config, {
-                address: contract.address,
-                abi,
+                ...contract,
                 functionName: 'getFinalPrice',
                 args: [amount, account.address]
 
@@ -322,8 +365,7 @@
 
             try {
                 const { request } = await simulateContract(config, {
-                    address: contract.address,
-                    abi,
+                    ...contract,
                     functionName: 'buySnake',
                     args: [inputArr],
                     value: price,
@@ -334,8 +376,8 @@
 
 
             } catch (e) {
-                document.getElementById('mintMessage').textContent = "error while simulating transaction. Please try again later."
-
+                document.getElementById('mintMessage').textContent = "error while simulating transaction. Open console for more info."
+                console.log(e)
             }
 
         }
@@ -343,11 +385,6 @@
 
         const results = await readContracts(config, {
             contracts: [
-                {
-                    ...contract,
-                    functionName: 'tokenURI',
-                    args: [1]
-                },
                 {
                     ...contract,
                     functionName: 'totalSupply',
@@ -363,12 +400,24 @@
             ]
         })
 
+        const randomId = Math.floor(Number(results[0].result) * Math.random() + 1)
+
+        const demo = await readContract(config, {
+            ...contract,
+            functionName: 'tokenURI',
+            args: [randomId]
+        })
 
 
-        const response = await fetch(results[0].result)
+
+
+
+        const response = await fetch(demo)
         const json = await response.json()
 
-        document.getElementById('supply').textContent = `supply: ${Number(results[1].result)}/${Number(results[2].result)} | price: ${formatEther(results[3].result)} eth`
+        // snakePrice = await updatePrice(1)
+
+        document.getElementById('supply').textContent = `supply: ${Number(results[0].result)}/${Number(results[1].result)} | price: ${formatEther(results[2].result)} eth`
         document.getElementById('image').setAttribute('data', json.image)
 
         
