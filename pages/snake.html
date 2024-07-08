@@ -52,7 +52,7 @@
         </section>
 
         <section id="demo">
-            <p>demo &#8595;</p>
+            <span style="font-size: x-large;">&dopf; &eopf; &mopf; &oopf; &#8595;</span>
             <br/>
             <object width="500" id="image"></object>
             <p id="supply">loading...</p>
@@ -104,6 +104,13 @@
       </footer>
 </body>
 
+<!-- <script type="module">
+    function start() {
+        document.dispatchEvent(new KeyboardEvent('keypress', {'code': 'Space'}));
+        console.log('start')
+    }
+</script> -->
+
 <script type="module">
     import { createPublicClient, http, getContract, formatEther,parseEther  } from 'https://esm.sh/viem'
     import { mainnet } from 'https://esm.sh/viem/chains'
@@ -115,8 +122,6 @@
     const whenConnected = document.getElementById('whenConnected');
     const whenDisconnected = document.getElementById('whenDisconnected');
 
-
-    let snakePrice;
 
     const contract = {
         address: "0x8c822FA282722eDcA512A9E94C591d3F52196eF2",
@@ -308,12 +313,12 @@
 
     window.onload = async () =>  {
 
+
         document.getElementById('metamask').onclick = async () => await connectWallet(injected)
-        document.getElementById('coinbaseWallet').onclick = async () => await connectWallet(coinbaseWallet, {appName: 'snake',preference: "eoaOnly"})
+        document.getElementById('coinbaseWallet').onclick = async () => await connectWallet(coinbaseWallet, { appName: 'snake', preference: "eoaOnly" })
         document.getElementById('disconnect').onclick = async () => {
 
-            await disconnect(config, {connector: config.connectors[0]})
-            // unwatchAccount();
+            await disconnect(config, { connector: config.connectors[0] })
             whenConnected.style.display = "none"
             whenDisconnected.style.display = "inline"
         }
