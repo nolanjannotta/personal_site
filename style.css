@@ -1,17 +1,38 @@
 @font-face {
-    font-family: "Source Code Pro";
-    src: local("./SourceCodePro-VariableFont_wght.ttf");
-}
+    font-family: "IBM Plex Mono";
+    src: url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=Noto+Serif:ital,wght@0,100..900;1,100..900&display=swap');;
+  }
 
+  
+  /* body{
+    margin:40px auto;
+    max-width:650px;
+    line-height:1.6;
+    font-size:18px;
+    color:#444;
+    padding:0 10px} */
 
 body {
-    font-family: 'Source Code Pro', monospace;
-    box-sizing: border-box;
-    padding: 2% 2%;
-    transform: skewY(2deg);
+    margin:auto;
+    max-width:80%;
+    font-family: 'IBM Plex Mono', monospace;
+    /* box-sizing: border-box; */
+    padding: 2%;
+    transform: skewY(1.75deg);
     line-height: 1.6;
 
 }
+
+li {
+    margin-bottom: 10px;
+}
+
+.project_name {
+    text-decoration: underline;
+}
+
+
+
 
 .background {
     position: absolute;
@@ -37,9 +58,6 @@ section h1 {
     width: max-content;
     text-decoration: underline;
     text-decoration-thickness: .5px;
-    text-decoration-style: wavy;
-    /* display: inline-block; */
-    /* transition-duration: 2s; */
     animation-direction: initial;
     cursor: grab;
 
@@ -84,7 +102,7 @@ footer {
 
 
 .corners {
-    min-width: 100%;
+    min-width: max-content;
     display: flex;
     justify-content: space-between;
 }
@@ -101,11 +119,10 @@ footer {
 
 
 
-section {
+/* section {
     width: max-content;
-    max-width: 90%;
-    /* background-color: orange; */
-}
+    max-width: 100%;
+} */
 
 @media (max-width: 900px) {
 
